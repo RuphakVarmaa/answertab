@@ -1,0 +1,54 @@
+{
+ "status": 201,
+ "ms": 617,
+ "debug_id": "ca4b5a02fdb1b",
+ "source": "sandbox-proof run L8y5vV, op orders.create (redacted ledger copy)",
+ "body": {
+  "id": "4HM0053164626273R",
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+    "method": "GET"
+   },
+   {
+    "rel": "approve",
+    "href": "https://www.sandbox.paypal.com/checkoutnow?token=4HM0053164626273R",
+    "method": "GET"
+   },
+   {
+    "rel": "update",
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+    "method": "PATCH"
+   },
+   {
+    "rel": "authorize",
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R/authorize",
+    "method": "POST"
+   }
+  ],
+  "intent": "AUTHORIZE",
+  "status": "CREATED",
+  "create_time": "2026-10-16T08:17:11Z",
+  "purchase_units": [
+   {
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "display_data": {
+      "brand_name": "AnswerTab"
+     },
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "20.00",
+     "currency_code": "USD"
+    },
+    "custom_id": "proofL8y5vV-fan_DYZmN",
+    "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+    "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+    "reference_id": "default",
+    "soft_descriptor": "AnswerTab"
+   }
+  ]
+ }
+}

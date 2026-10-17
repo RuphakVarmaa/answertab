@@ -1,0 +1,214 @@
+{
+  "createdAt": "2026-10-16T08:18:17.591Z",
+  "label": "dev adaptive/low",
+  "split": "dev",
+  "category": null,
+  "cases": 43,
+  "syntheticCases": 43,
+  "model": "claude-haiku-5-5",
+  "settings": {
+    "thinking": "adaptive",
+    "effort": "low",
+    "maxTokens": 1500
+  },
+  "fromRaw": null,
+  "calls": 86,
+  "failedCalls": 0,
+  "latencyMs": {
+    "p50": 1371,
+    "p95": 2485,
+    "max": 3886
+  },
+  "costPerCaseMicros": 125,
+  "totalCostMicros": 10712,
+  "cacheReadShare": 0.929,
+  "metrics": {
+    "tau": 0.85,
+    "runs": 2,
+    "worstRunFalseChargeRate": 0,
+    "worstRunFalseCharges": "0/30",
+    "worstRunFalseChargeWilson95": [
+      0,
+      0.114
+    ],
+    "meanFalseChargeRate": 0,
+    "pooledFalseChargeWilson95": [
+      0,
+      0.06
+    ],
+    "meanRecall": 0.966,
+    "minRecall": 0.966,
+    "recallWilson95FirstRun": [
+      0.828,
+      0.994
+    ],
+    "meanRecallLockOrReview": 1,
+    "meanReviewRateOnAnswered": 0.034,
+    "meanReviewShareAllPairs": 0.119,
+    "meanRawVerdictAccuracy": 0.975,
+    "perRun": [
+      {
+        "run": 1,
+        "pairs": 59,
+        "negatives": 30,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.114
+        ],
+        "answered": 29,
+        "locksCorrect": 28,
+        "recall": 0.966,
+        "recallLockOrReview": 1,
+        "reviewOnAnswered": 1,
+        "reviewRateAnswered": 0.034,
+        "reviewShareAll": 0.119,
+        "evidenceMissOnLock": 0,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 8,
+        "deflectionsDetected": 7,
+        "lateBackerChecks": 2,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 0.983,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "dev-ooo-1#Q2:review"
+        ]
+      },
+      {
+        "run": 2,
+        "pairs": 59,
+        "negatives": 30,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.114
+        ],
+        "answered": 29,
+        "locksCorrect": 28,
+        "recall": 0.966,
+        "recallLockOrReview": 1,
+        "reviewOnAnswered": 1,
+        "reviewRateAnswered": 0.034,
+        "reviewShareAll": 0.119,
+        "evidenceMissOnLock": 0,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 8,
+        "deflectionsDetected": 6,
+        "lateBackerChecks": 2,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 0.966,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "dev-ooo-1#Q2:review"
+        ]
+      }
+    ]
+  },
+  "tauSweep": [
+    {
+      "tau": 0.6,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.65,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.7,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.75,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.8,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.983,
+      "minRecall": 0.966,
+      "meanReviewRateOnAnswered": 0.017
+    },
+    {
+      "tau": 0.85,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.966,
+      "minRecall": 0.966,
+      "meanReviewRateOnAnswered": 0.034
+    },
+    {
+      "tau": 0.9,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.914,
+      "minRecall": 0.897,
+      "meanReviewRateOnAnswered": 0.086
+    },
+    {
+      "tau": 0.95,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.155,
+      "minRecall": 0.138,
+      "meanReviewRateOnAnswered": 0.845
+    }
+  ]
+}

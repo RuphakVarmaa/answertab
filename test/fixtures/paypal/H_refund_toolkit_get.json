@@ -1,0 +1,53 @@
+{
+ "status": 200,
+ "ms": 437,
+ "debug_id": "718285dc637f8",
+ "source": "sandbox-proof run L8y5vV, op refunds.get:toolkit (redacted ledger copy)",
+ "body": {
+  "id": "01X78775LG7323300",
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+    "method": "GET"
+   },
+   {
+    "rel": "up",
+    "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+    "method": "GET"
+   }
+  ],
+  "payer": {
+   "merchant_id": "GYWQWW2DYGMFE",
+   "email_address": "sb-u***@business.example.com"
+  },
+  "amount": {
+   "value": "3.00",
+   "currency_code": "USD"
+  },
+  "status": "COMPLETED",
+  "custom_id": "proofL8y5vV-fan_AiuQz",
+  "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+  "create_time": "2026-10-16T01:17:20-07:00",
+  "update_time": "2026-10-16T01:17:20-07:00",
+  "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back.",
+  "seller_payable_breakdown": {
+   "net_amount": {
+    "value": "3.00",
+    "currency_code": "USD"
+   },
+   "paypal_fee": {
+    "value": "0.00",
+    "currency_code": "USD"
+   },
+   "gross_amount": {
+    "value": "3.00",
+    "currency_code": "USD"
+   },
+   "total_refunded_amount": {
+    "value": "3.00",
+    "currency_code": "USD"
+   }
+  }
+ }
+}

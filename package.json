@@ -1,0 +1,55 @@
+{
+  "name": "answertab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ask live, pay only for answers. Fans hold one PayPal authorization per stream; Claude checks spoken answers; PayPal settles once per fan.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,magenta \"tsx watch --env-file-if-exists=.env src/server/index.ts\" \"vite\"",
+    "build": "tsc -p tsconfig.server.json && vite build",
+    "start": "node --env-file-if-exists=.env dist/server/server/index.js",
+    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.scripts.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "migrate": "tsx --env-file-if-exists=.env src/server/db/migrate.ts",
+    "sandbox:proof": "tsx --env-file-if-exists=.env scripts/sandbox-proof/run.ts",
+    "webhook:register": "tsx --env-file-if-exists=.env scripts/register-webhook.ts",
+    "eval": "tsx --env-file-if-exists=.env scripts/eval.ts",
+    "synthetic": "tsx --env-file-if-exists=.env scripts/synthetic.ts",
+    "serve:local": "PGLITE_DIR=.data/pglite-dev JUDGE_CODE=local-judge tsx --env-file=.env src/server/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.135.0",
+    "@electric-sql/pglite": "0.5.10",
+    "@fastify/rate-limit": "11.2.1",
+    "@fastify/static": "10.1.6",
+    "@paypal/agent-toolkit": "1.11.0",
+    "@paypal/paypal-server-sdk": "2.5.0",
+    "@paypal/react-paypal-js": "10.6.0",
+    "fastify": "5.12.7",
+    "pg": "8.23.1",
+    "qrcode": "1.5.4",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router-dom": "7.18.4"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "@types/pg": "8.23.1",
+    "@types/qrcode": "1.5.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "concurrently": "10.0.6",
+    "fast-check": "4.10.2",
+    "puppeteer-core": "25.12.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.5"
+  }
+}

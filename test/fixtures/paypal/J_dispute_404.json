@@ -1,0 +1,18 @@
+{
+ "status": 404,
+ "ms": 418,
+ "debug_id": "f738cf9548912",
+ "source": "sandbox-proof run L8y5vV, op disputes.get:toolkit (redacted ledger copy)",
+ "body": {
+  "name": "RESOURCE_NOT_FOUND",
+  "links": [],
+  "details": [
+   {
+    "issue": "RESOURCE_NOT_FOUND"
+   }
+  ],
+  "message": "The specified resource does not exist.",
+  "debug_id": "f738cf9548912",
+  "information_link": "https://developer.paypal.com/docs/api/customer-disputes/v1/#errors"
+ }
+}

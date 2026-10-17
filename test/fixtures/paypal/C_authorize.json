@@ -1,0 +1,100 @@
+{
+ "status": 201,
+ "ms": 3344,
+ "debug_id": "f846016bc1041",
+ "body": {
+  "id": "3DH03073L5228241J",
+  "intent": "AUTHORIZE",
+  "status": "COMPLETED",
+  "payment_source": {
+   "card": {
+    "name": "Heard Spike",
+    "last_digits": "1111",
+    "expiry": "2030-12",
+    "brand": "VISA",
+    "type": "UNKNOWN",
+    "bin_details": {}
+   }
+  },
+  "purchase_units": [
+   {
+    "reference_id": "heard-d4f240a1-C_authorize",
+    "amount": {
+     "currency_code": "USD",
+     "value": "15.00"
+    },
+    "payee": {
+     "email_address": "sb-uycio53304181@business.example.com",
+     "merchant_id": "GYWQWW2DYGMFE"
+    },
+    "description": "Heard spike: question tab",
+    "custom_id": "heard-spike-d4f240a1",
+    "soft_descriptor": "TEST STORE",
+    "payments": {
+     "authorizations": [
+      {
+       "status": "CREATED",
+       "id": "85971157JW459961R",
+       "amount": {
+        "currency_code": "USD",
+        "value": "15.00"
+       },
+       "custom_id": "heard-spike-d4f240a1",
+       "seller_protection": {
+        "status": "NOT_ELIGIBLE"
+       },
+       "processor_response": {
+        "avs_code": "A",
+        "cvv_code": "M",
+        "response_code": "0000"
+       },
+       "expiration_time": "2026-11-14T06:43:19Z",
+       "links": [
+        {
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/85971157JW459961R",
+         "rel": "self",
+         "method": "GET"
+        },
+        {
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/85971157JW459961R/capture",
+         "rel": "capture",
+         "method": "POST"
+        },
+        {
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/85971157JW459961R/void",
+         "rel": "void",
+         "method": "POST"
+        },
+        {
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/85971157JW459961R/reauthorize",
+         "rel": "reauthorize",
+         "method": "POST"
+        },
+        {
+         "href": "https://api.sandbox.paypal.com/v2/checkout/orders/3DH03073L5228241J",
+         "rel": "up",
+         "method": "GET"
+        }
+       ],
+       "create_time": "2026-10-16T06:43:19Z",
+       "update_time": "2026-10-16T06:43:19Z",
+       "network_transaction_reference": {
+        "id": "291561194078109",
+        "network": "VISA"
+       }
+      }
+     ]
+    }
+   }
+  ],
+  "create_time": "2026-10-16T06:43:19Z",
+  "update_time": "2026-10-16T06:43:19Z",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/3DH03073L5228241J",
+    "rel": "self",
+    "method": "GET"
+   }
+  ]
+ }
+}

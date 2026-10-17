@@ -1,0 +1,3318 @@
+{
+ "runId": "L8y5vV",
+ "roomId": "proofL8y5vV",
+ "startedAt": "2026-10-16T08:16:52.097Z",
+ "steps": [
+  {
+   "n": 1,
+   "label": "Test cards in parallel (limiter max 4)",
+   "expected": "each of 4 cards: auth CREATED, then VOIDED",
+   "ok": true,
+   "detail": "Visa CREATED/VOIDED, Mastercard CREATED/VOIDED, Amex CREATED/VOIDED, Discover CREATED/VOIDED",
+   "ms": 5417
+  },
+  {
+   "n": 2,
+   "label": "Tab A: bot_card AUTHORIZE $20",
+   "expected": "HTTP 201, order COMPLETED, auth CREATED",
+   "ok": true,
+   "detail": "order 5H484705A64509234 COMPLETED, auth 4YR07924YA817361L CREATED, expires 2026-11-14T08:16:59Z",
+   "ms": 2544
+  },
+  {
+   "n": 3,
+   "label": "Tab A: settle with one $7 capture (final_capture)",
+   "expected": "COMPLETED, fee and net from seller_receivable_breakdown",
+   "ok": true,
+   "detail": "capture 9DP2030183371883J COMPLETED, gross 700c fee 67c net 633c",
+   "ms": 1936
+  },
+  {
+   "n": 4,
+   "label": "Tab A: GET capture and authorization",
+   "expected": "capture COMPLETED, authorization CAPTURED (rest released)",
+   "ok": true,
+   "detail": "capture COMPLETED, authorization CAPTURED",
+   "ms": 1214
+  },
+  {
+   "n": 5,
+   "label": "Tab A: replay the capture with the same PayPal-Request-Id",
+   "expected": "same capture id, no second charge",
+   "ok": true,
+   "detail": "HTTP 200, capture 9DP2030183371883J, same as original: true",
+   "ms": 850
+  },
+  {
+   "n": 6,
+   "label": "Tab A: capture again after the final capture (attempt 1)",
+   "expected": "422 AUTHORIZATION_ALREADY_CAPTURED",
+   "ok": true,
+   "detail": "HTTP 422 UNPROCESSABLE_ENTITY/AUTHORIZATION_ALREADY_CAPTURED (debug ca4b5a0012b55)",
+   "ms": 765
+  },
+  {
+   "n": 7,
+   "label": "Tab B: AUTHORIZE $10, nothing answered, void",
+   "expected": "auth CREATED, then VOIDED",
+   "ok": true,
+   "detail": "auth 8BY54571MK158652W CREATED -> void VOIDED, GET VOIDED",
+   "ms": 4105
+  },
+  {
+   "n": 8,
+   "label": "Tab C: cardholder CCREJECT-REFUSED",
+   "expected": "HTTP 201, order COMPLETED, auth DENIED (processor 0500)",
+   "ok": true,
+   "detail": "order 7FB36410VW5193304 COMPLETED, auth 0D294189JB003390R DENIED, processor 0500",
+   "ms": 2598
+  },
+  {
+   "n": 9,
+   "label": "Tab D: card-fields path (create, confirm card, authorizeOrder)",
+   "expected": "order CREATED, confirm APPROVED, auth CREATED",
+   "ok": true,
+   "detail": "order 4HM0053164626273R CREATED -> APPROVED -> auth 50M31695U7484020X CREATED",
+   "ms": 3534
+  },
+  {
+   "n": 10,
+   "label": "Tab D: capture with PayPal-Mock-Response AUTHORIZATION_EXPIRED",
+   "expected": "422 AUTHORIZATION_EXPIRED (failed-settlement path)",
+   "ok": true,
+   "detail": "HTTP 422 UNPROCESSABLE_ENTITY/AUTHORIZATION_EXPIRED (debug ca4b5a045e99d)",
+   "ms": 329
+  },
+  {
+   "n": 11,
+   "label": "Tab D: retry the settlement as attempt 1 (-a1)",
+   "expected": "COMPLETED",
+   "ok": true,
+   "detail": "capture 7BB55672H9481991W COMPLETED, fee 62c",
+   "ms": 1810
+  },
+  {
+   "n": 12,
+   "label": "Tab E: PayPal wallet AUTHORIZE order",
+   "expected": "PAYER_ACTION_REQUIRED with an approval link (buyer login not automated)",
+   "ok": true,
+   "detail": "order 45E67558591071613 PAYER_ACTION_REQUIRED, approval link present",
+   "ms": 820
+  },
+  {
+   "n": 13,
+   "label": "Contest refund: $3 of capture A via Agent Toolkit create_refund, then get_refund",
+   "expected": "refund COMPLETED, path toolkit, PayPal keeps the fee",
+   "ok": true,
+   "detail": "refund 01X78775LG7323300 COMPLETED via toolkit, gross 300c fee returned 0c net 300c",
+   "ms": 4221
+  },
+  {
+   "n": 14,
+   "label": "Contest refund replay: same request id refund-{contest}",
+   "expected": "same refund id",
+   "ok": true,
+   "detail": "refund 01X78775LG7323300, same as first: true",
+   "ms": 1906
+  },
+  {
+   "n": 15,
+   "label": "Agent Toolkit get_order on tab A",
+   "expected": "auth CAPTURED, capture listed",
+   "ok": true,
+   "detail": "order 5H484705A64509234 COMPLETED, auth CAPTURED, captures 9DP2030183371883J",
+   "ms": 1757
+  },
+  {
+   "n": 16,
+   "label": "Agent Toolkit get_dispute on an unknown id",
+   "expected": "404 RESOURCE_NOT_FOUND mapped to PayPalError",
+   "ok": true,
+   "detail": "HTTP 404 RESOURCE_NOT_FOUND/RESOURCE_NOT_FOUND (debug f738cf9548912)",
+   "ms": 1130
+  },
+  {
+   "n": 17,
+   "label": "Payout $1 to the US sandbox creator",
+   "expected": "batch created, then readable",
+   "ok": true,
+   "detail": "batch RVH4PCJL3VCZU PENDING; GET PENDING, item PENDING",
+   "ms": 2172
+  },
+  {
+   "n": 18,
+   "label": "Payout again with the same sender_batch_id",
+   "expected": "PayPal rejects (400); answered from the stored payout_batch_id",
+   "ok": true,
+   "detail": "PayPal HTTP 400 Batch with given sender_batch_id already exists; recovered batch RVH4PCJL3VCZU",
+   "ms": 934
+  },
+  {
+   "n": 19,
+   "label": "Reporting balances",
+   "expected": "USD balance readable",
+   "ok": true,
+   "detail": "USD total 5001.18",
+   "ms": 402
+  },
+  {
+   "n": 20,
+   "label": "List webhooks (read-only)",
+   "expected": "listing works",
+   "ok": true,
+   "detail": "0 webhook(s) registered on this app",
+   "ms": 366
+  }
+ ],
+ "calls": [
+  {
+   "id": "ppc_6uGpwnV1hG4k35",
+   "room_id": null,
+   "tab_id": null,
+   "op": "oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "ca4b59fb7f944",
+   "latency_ms": 647,
+   "request_redacted": null,
+   "response_redacted": {
+    "expires_in": 31921,
+    "token_type": "Bearer",
+    "scope_count": 33
+   },
+   "created_at": "2026-10-16T08:16:52.762Z"
+  },
+  {
+   "id": "ppc_6FLLCxBfRUzRNM",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_card0aF1c",
+   "http_status": 201,
+   "resource_id": "8BA82018AE499690H",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b59fbabaa9",
+   "latency_ms": 3205,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "1.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_card0aF1c",
+       "invoice_id": "tab-proofL8y5vV-fan_card0aF1c",
+       "description": "Hold up to $1.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_card0aF1c"
+    }
+   },
+   "response_redacted": {
+    "id": "8BA82018AE499690H",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/8BA82018AE499690H",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:54Z",
+    "update_time": "2026-10-16T08:16:54Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "1.00",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "5VX10680X2730952D",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/5VX10680X2730952D",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/5VX10680X2730952D/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/5VX10680X2730952D/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/5VX10680X2730952D/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/8BA82018AE499690H",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "1.00",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_card0aF1c",
+         "invoice_id": "tab-proofL8y5vV-fan_card0aF1c",
+         "create_time": "2026-10-16T08:16:54Z",
+         "update_time": "2026-10-16T08:16:54Z",
+         "expiration_time": "2026-11-14T08:16:54Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "264102600718834",
+          "network": "VISA"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_card0aF1c",
+      "invoice_id": "tab-proofL8y5vV-fan_card0aF1c",
+      "description": "Hold up to $1.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:16:55.312Z"
+  },
+  {
+   "id": "ppc_SapJ9ReFEYTRcn",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_card1WxnK",
+   "http_status": 201,
+   "resource_id": "24911930E54175247",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b59fbadbb1",
+   "latency_ms": 3854,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "1.01",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_card1WxnK",
+       "invoice_id": "tab-proofL8y5vV-fan_card1WxnK",
+       "description": "Hold up to $1.01. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_card1WxnK"
+    }
+   },
+   "response_redacted": {
+    "id": "24911930E54175247",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/24911930E54175247",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:55Z",
+    "update_time": "2026-10-16T08:16:55Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "MASTERCARD",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "4444"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "1.01",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "9GG21725NN731120C",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9GG21725NN731120C",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9GG21725NN731120C/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9GG21725NN731120C/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9GG21725NN731120C/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/24911930E54175247",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "1.01",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_card1WxnK",
+         "invoice_id": "tab-proofL8y5vV-fan_card1WxnK",
+         "create_time": "2026-10-16T08:16:55Z",
+         "update_time": "2026-10-16T08:16:55Z",
+         "expiration_time": "2026-11-14T08:16:55Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "Y",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "VIS01106K",
+          "date": "0123",
+          "network": "MASTERCARD"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_card1WxnK",
+      "invoice_id": "tab-proofL8y5vV-fan_card1WxnK",
+      "description": "Hold up to $1.01. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:16:55.971Z"
+  },
+  {
+   "id": "ppc_h5So14x5bSoRij",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_card2Y9iv",
+   "http_status": 201,
+   "resource_id": "46B96932UK515782M",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b59fbade93",
+   "latency_ms": 3986,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "1.02",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_card2Y9iv",
+       "invoice_id": "tab-proofL8y5vV-fan_card2Y9iv",
+       "description": "Hold up to $1.02. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_card2Y9iv"
+    }
+   },
+   "response_redacted": {
+    "id": "46B96932UK515782M",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/46B96932UK515782M",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:55Z",
+    "update_time": "2026-10-16T08:16:55Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "AMEX",
+      "expiry": "[redacted]",
+      "bin_details": {
+       "bin": "371449",
+       "issuing_bank": "American Express",
+       "bin_country_code": "US"
+      },
+      "last_digits": "8431",
+      "available_networks": [
+       "AMEX"
+      ]
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "1.02",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "80W01379HL3326401",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/80W01379HL3326401",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/80W01379HL3326401/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/80W01379HL3326401/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/80W01379HL3326401/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/46B96932UK515782M",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "1.02",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_card2Y9iv",
+         "invoice_id": "tab-proofL8y5vV-fan_card2Y9iv",
+         "create_time": "2026-10-16T08:16:55Z",
+         "update_time": "2026-10-16T08:16:55Z",
+         "expiration_time": "2026-11-14T08:16:55Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "821596438970322",
+          "network": "AMEX"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_card2Y9iv",
+      "invoice_id": "tab-proofL8y5vV-fan_card2Y9iv",
+      "description": "Hold up to $1.02. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:16:56.102Z"
+  },
+  {
+   "id": "ppc_7q7fMF2VJ7WXw5",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payments.void",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/5VX10680X2730952D/void",
+   "request_id": "void-proofL8y5vV-fan_card0aF1c",
+   "http_status": 200,
+   "resource_id": "5VX10680X2730952D",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b59fca4a55",
+   "latency_ms": 838,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "paypal-request-id": "void-proofL8y5vV-fan_card0aF1c"
+    }
+   },
+   "response_redacted": {
+    "id": "5VX10680X2730952D",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/5VX10680X2730952D",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "1.00",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "invoice_id": "tab-proofL8y5vV-fan_card0aF1c",
+    "create_time": "2026-10-16T01:16:54-07:00",
+    "update_time": "2026-10-16T01:16:55-07:00",
+    "expiration_time": "2026-11-14T00:16:54-08:00",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    }
+   },
+   "created_at": "2026-10-16T08:16:56.157Z"
+  },
+  {
+   "id": "ppc_NP9Qi9r6KBm2z4",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_card3RUHz",
+   "http_status": 201,
+   "resource_id": "6XC80218PM4968720",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b59fbadda5",
+   "latency_ms": 4070,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "1.03",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_card3RUHz",
+       "invoice_id": "tab-proofL8y5vV-fan_card3RUHz",
+       "description": "Hold up to $1.03. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_card3RUHz"
+    }
+   },
+   "response_redacted": {
+    "id": "6XC80218PM4968720",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6XC80218PM4968720",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:55Z",
+    "update_time": "2026-10-16T08:16:55Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "CREDIT",
+      "brand": "DISCOVER",
+      "expiry": "[redacted]",
+      "bin_details": {
+       "bin": "601111",
+       "products": [
+        "CONSUMER"
+       ],
+       "bin_country_code": "US"
+      },
+      "last_digits": "1117",
+      "available_networks": [
+       "COFIDIS",
+       "DISCOVER"
+      ]
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "1.03",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "375078163A7024630",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/375078163A7024630",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/375078163A7024630/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/375078163A7024630/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/375078163A7024630/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6XC80218PM4968720",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "1.03",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_card3RUHz",
+         "invoice_id": "tab-proofL8y5vV-fan_card3RUHz",
+         "create_time": "2026-10-16T08:16:55Z",
+         "update_time": "2026-10-16T08:16:55Z",
+         "expiration_time": "2026-11-14T08:16:55Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "Y",
+          "cvv_code": "S",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "864109425517117",
+          "date": "0408",
+          "network": "DISCOVER"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_card3RUHz",
+      "invoice_id": "tab-proofL8y5vV-fan_card3RUHz",
+      "description": "Hold up to $1.03. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:16:56.186Z"
+  },
+  {
+   "id": "ppc_qRrABQJqU9XcQH",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payments.void",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/80W01379HL3326401/void",
+   "request_id": "void-proofL8y5vV-fan_card2Y9iv",
+   "http_status": 200,
+   "resource_id": "80W01379HL3326401",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b59fcf6d73",
+   "latency_ms": 856,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "paypal-request-id": "void-proofL8y5vV-fan_card2Y9iv"
+    }
+   },
+   "response_redacted": {
+    "id": "80W01379HL3326401",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/80W01379HL3326401",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "1.02",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "invoice_id": "tab-proofL8y5vV-fan_card2Y9iv",
+    "create_time": "2026-10-16T01:16:55-07:00",
+    "update_time": "2026-10-16T01:16:56-07:00",
+    "expiration_time": "2026-11-14T00:16:55-08:00",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    }
+   },
+   "created_at": "2026-10-16T08:16:56.964Z"
+  },
+  {
+   "id": "ppc_8qv1DVBqp7YBWP",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payments.void",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/375078163A7024630/void",
+   "request_id": "void-proofL8y5vV-fan_card3RUHz",
+   "http_status": 200,
+   "resource_id": "375078163A7024630",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b59fcfec19",
+   "latency_ms": 789,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "paypal-request-id": "void-proofL8y5vV-fan_card3RUHz"
+    }
+   },
+   "response_redacted": {
+    "id": "375078163A7024630",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/375078163A7024630",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "1.03",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "invoice_id": "tab-proofL8y5vV-fan_card3RUHz",
+    "create_time": "2026-10-16T01:16:55-07:00",
+    "update_time": "2026-10-16T01:16:56-07:00",
+    "expiration_time": "2026-11-14T00:16:55-08:00",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    }
+   },
+   "created_at": "2026-10-16T08:16:56.978Z"
+  },
+  {
+   "id": "ppc_KZEP8CC8eMf9EL",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payments.void",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/9GG21725NN731120C/void",
+   "request_id": "void-proofL8y5vV-fan_card1WxnK",
+   "http_status": 200,
+   "resource_id": "9GG21725NN731120C",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b59fce99a8",
+   "latency_ms": 1542,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "paypal-request-id": "void-proofL8y5vV-fan_card1WxnK"
+    }
+   },
+   "response_redacted": {
+    "id": "9GG21725NN731120C",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9GG21725NN731120C",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "1.01",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "invoice_id": "tab-proofL8y5vV-fan_card1WxnK",
+    "create_time": "2026-10-16T01:16:55-07:00",
+    "update_time": "2026-10-16T01:16:57-07:00",
+    "expiration_time": "2026-11-14T00:16:55-08:00",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    }
+   },
+   "created_at": "2026-10-16T08:16:57.522Z"
+  },
+  {
+   "id": "ppc_RzQWbK27Z9PLsr",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_AiuQz",
+   "http_status": 201,
+   "resource_id": "5H484705A64509234",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b59fd84ca2",
+   "latency_ms": 2540,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "20.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_AiuQz",
+       "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+       "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_AiuQz"
+    }
+   },
+   "response_redacted": {
+    "id": "5H484705A64509234",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/5H484705A64509234",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:59Z",
+    "update_time": "2026-10-16T08:16:59Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "4YR07924YA817361L",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/5H484705A64509234",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "20.00",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_AiuQz",
+         "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+         "create_time": "2026-10-16T08:16:59Z",
+         "update_time": "2026-10-16T08:16:59Z",
+         "expiration_time": "2026-11-14T08:16:59Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "[redacted-pan]",
+          "network": "VISA"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_AiuQz",
+      "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:00.069Z"
+  },
+  {
+   "id": "ppc_ACGDBfkPKY2skW",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "payments.capture",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/4YR07924YA817361L/capture",
+   "request_id": "settle-proofL8y5vV-fan_AiuQz",
+   "http_status": 201,
+   "resource_id": "9DP2030183371883J",
+   "resource_status": "COMPLETED",
+   "debug_id": "ca4b59fe82a2a",
+   "latency_ms": 1930,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "7.00",
+      "currency_code": "USD"
+     },
+     "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+     "final_capture": true,
+     "note_to_payer": "AnswerTab: Q1 answered on stream (proof run)."
+    },
+    "fan_id": "fan_AiuQz",
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "settle-proofL8y5vV-fan_AiuQz"
+    },
+    "authorization_id": "4YR07924YA817361L"
+   },
+   "response_redacted": {
+    "id": "9DP2030183371883J",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     },
+     {
+      "rel": "refund",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J/refund",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "7.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T08:17:01Z",
+    "update_time": "2026-10-16T08:17:01Z",
+    "final_capture": true,
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "seller_receivable_breakdown": {
+     "net_amount": {
+      "value": "6.33",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.67",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "7.00",
+      "currency_code": "USD"
+     },
+     "exchange_rate": {}
+    },
+    "network_transaction_reference": {
+     "id": "[redacted-pan]",
+     "network": "VISA"
+    }
+   },
+   "created_at": "2026-10-16T08:17:02.006Z"
+  },
+  {
+   "id": "ppc_Z64p14fsK9BAAD",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "payments.capture.get",
+   "method": "GET",
+   "endpoint": "/v2/payments/captures/9DP2030183371883J",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "9DP2030183371883J",
+   "resource_status": "COMPLETED",
+   "debug_id": "ca4b59ff43e49",
+   "latency_ms": 684,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "id": "9DP2030183371883J",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     },
+     {
+      "rel": "refund",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J/refund",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+      "method": "GET"
+     }
+    ],
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "7.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T08:17:01Z",
+    "update_time": "2026-10-16T08:17:01Z",
+    "final_capture": true,
+    "disbursement_mode": "INSTANT",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "processor_response": {
+     "avs_code": "A",
+     "cvv_code": "M",
+     "response_code": "0000"
+    },
+    "supplementary_data": {
+     "related_ids": {
+      "order_id": "5H484705A64509234",
+      "authorization_id": "4YR07924YA817361L"
+     }
+    },
+    "seller_receivable_breakdown": {
+     "net_amount": {
+      "value": "6.33",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.67",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "7.00",
+      "currency_code": "USD"
+     }
+    },
+    "network_transaction_reference": {
+     "id": "[redacted-pan]",
+     "network": "VISA"
+    }
+   },
+   "created_at": "2026-10-16T08:17:02.696Z"
+  },
+  {
+   "id": "ppc_deQaSUeo9S3uo7",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "payments.authorization.get",
+   "method": "GET",
+   "endpoint": "/v2/payments/authorizations/4YR07924YA817361L",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "4YR07924YA817361L",
+   "resource_status": "CAPTURED",
+   "debug_id": "ca4b59ff88ff4",
+   "latency_ms": 523,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "id": "4YR07924YA817361L",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+      "method": "GET"
+     },
+     {
+      "rel": "capture",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/capture",
+      "method": "POST"
+     },
+     {
+      "rel": "void",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/void",
+      "method": "POST"
+     },
+     {
+      "rel": "reauthorize",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/reauthorize",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/5H484705A64509234",
+      "method": "GET"
+     }
+    ],
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "20.00",
+     "currency_code": "USD"
+    },
+    "status": "CAPTURED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T08:16:59Z",
+    "update_time": "2026-10-16T08:17:01Z",
+    "expiration_time": "2026-11-14T08:16:59Z",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "processor_response": {
+     "avs_code": "A",
+     "cvv_code": "M",
+     "response_code": "0000"
+    },
+    "supplementary_data": {
+     "related_ids": {
+      "order_id": "5H484705A64509234"
+     }
+    },
+    "network_transaction_reference": {
+     "id": "[redacted-pan]",
+     "network": "VISA"
+    }
+   },
+   "created_at": "2026-10-16T08:17:03.223Z"
+  },
+  {
+   "id": "ppc_FR9Hv4q4UBd7Gp",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "payments.capture.replay",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/4YR07924YA817361L/capture",
+   "request_id": "settle-proofL8y5vV-fan_AiuQz",
+   "http_status": 200,
+   "resource_id": "9DP2030183371883J",
+   "resource_status": "COMPLETED",
+   "debug_id": "ca4b59ffbd94f",
+   "latency_ms": 843,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "7.00",
+      "currency_code": "USD"
+     },
+     "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+     "final_capture": true,
+     "note_to_payer": "AnswerTab: Q1 answered on stream (proof run)."
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "settle-proofL8y5vV-fan_AiuQz"
+    },
+    "replay_of": "ppc_ACGDBfkPKY2skW",
+    "authorization_id": "4YR07924YA817361L"
+   },
+   "response_redacted": {
+    "id": "9DP2030183371883J",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     },
+     {
+      "rel": "refund",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J/refund",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "7.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T08:17:01Z",
+    "update_time": "2026-10-16T08:17:01Z",
+    "final_capture": true,
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "seller_receivable_breakdown": {
+     "net_amount": {
+      "value": "6.33",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.67",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "7.00",
+      "currency_code": "USD"
+     },
+     "exchange_rate": {}
+    },
+    "network_transaction_reference": {
+     "id": "[redacted-pan]",
+     "network": "VISA"
+    }
+   },
+   "created_at": "2026-10-16T08:17:04.073Z"
+  },
+  {
+   "id": "ppc_gkV5m7D1mC7UG1",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "payments.capture",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/4YR07924YA817361L/capture",
+   "request_id": "settle-proofL8y5vV-fan_AiuQz-a1",
+   "http_status": 422,
+   "resource_id": null,
+   "resource_status": "AUTHORIZATION_ALREADY_CAPTURED",
+   "debug_id": "ca4b5a0012b55",
+   "latency_ms": 761,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "1.00",
+      "currency_code": "USD"
+     },
+     "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+     "final_capture": true,
+     "note_to_payer": "again"
+    },
+    "fan_id": "fan_AiuQz",
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "settle-proofL8y5vV-fan_AiuQz-a1"
+    },
+    "authorization_id": "4YR07924YA817361L"
+   },
+   "response_redacted": {
+    "name": "UNPROCESSABLE_ENTITY",
+    "links": [
+     {
+      "rel": "information_link",
+      "href": "https://developer.paypal.com/docs/api/payments/v2/#error-AUTHORIZATION_ALREADY_CAPTURED",
+      "encType": "application/json"
+     }
+    ],
+    "details": [
+     {
+      "issue": "AUTHORIZATION_ALREADY_CAPTURED",
+      "description": "Authorization has already been captured."
+     }
+    ],
+    "message": "The requested action could not be performed, semantically incorrect, or failed business validation.",
+    "debug_id": "ca4b5a0012b55"
+   },
+   "created_at": "2026-10-16T08:17:04.839Z"
+  },
+  {
+   "id": "ppc_gPypAN28zAukt3",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_BF7cG",
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_BF7cG",
+   "http_status": 201,
+   "resource_id": "0YU178735B802730T",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b5a005ed2e",
+   "latency_ms": 2418,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "10.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_BF7cG",
+       "invoice_id": "tab-proofL8y5vV-fan_BF7cG",
+       "description": "Hold up to $10.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_BF7cG"
+    }
+   },
+   "response_redacted": {
+    "id": "0YU178735B802730T",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/0YU178735B802730T",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:17:06Z",
+    "update_time": "2026-10-16T08:17:06Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "MASTERCARD",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "4444"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "10.00",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "8BY54571MK158652W",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/0YU178735B802730T",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "10.00",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_BF7cG",
+         "invoice_id": "tab-proofL8y5vV-fan_BF7cG",
+         "create_time": "2026-10-16T08:17:06Z",
+         "update_time": "2026-10-16T08:17:06Z",
+         "expiration_time": "2026-11-14T08:17:06Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "Y",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "VIS01106K",
+          "date": "0123",
+          "network": "MASTERCARD"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_BF7cG",
+      "invoice_id": "tab-proofL8y5vV-fan_BF7cG",
+      "description": "Hold up to $10.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:07.262Z"
+  },
+  {
+   "id": "ppc_16jvAG9gXcqn3n",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_BF7cG",
+   "op": "payments.void",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/8BY54571MK158652W/void",
+   "request_id": "void-proofL8y5vV-fan_BF7cG",
+   "http_status": 200,
+   "resource_id": "8BY54571MK158652W",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b5a0151a18",
+   "latency_ms": 1175,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "paypal-request-id": "void-proofL8y5vV-fan_BF7cG"
+    }
+   },
+   "response_redacted": {
+    "id": "8BY54571MK158652W",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "10.00",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "invoice_id": "tab-proofL8y5vV-fan_BF7cG",
+    "create_time": "2026-10-16T01:17:06-07:00",
+    "update_time": "2026-10-16T01:17:08-07:00",
+    "expiration_time": "2026-11-14T00:17:06-08:00",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    }
+   },
+   "created_at": "2026-10-16T08:17:08.442Z"
+  },
+  {
+   "id": "ppc_nJhZBHAekNQ3mm",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_BF7cG",
+   "op": "payments.authorization.get",
+   "method": "GET",
+   "endpoint": "/v2/payments/authorizations/8BY54571MK158652W",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "8BY54571MK158652W",
+   "resource_status": "VOIDED",
+   "debug_id": "ca4b5a01c6ca5",
+   "latency_ms": 501,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "id": "8BY54571MK158652W",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W",
+      "method": "GET"
+     },
+     {
+      "rel": "capture",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/capture",
+      "method": "POST"
+     },
+     {
+      "rel": "void",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/void",
+      "method": "POST"
+     },
+     {
+      "rel": "reauthorize",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/8BY54571MK158652W/reauthorize",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/0YU178735B802730T",
+      "method": "GET"
+     }
+    ],
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "10.00",
+     "currency_code": "USD"
+    },
+    "status": "VOIDED",
+    "custom_id": "proofL8y5vV-fan_BF7cG",
+    "invoice_id": "tab-proofL8y5vV-fan_BF7cG",
+    "create_time": "2026-10-16T08:17:06Z",
+    "update_time": "2026-10-16T08:17:08Z",
+    "expiration_time": "2026-11-14T08:17:06Z",
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "processor_response": {
+     "avs_code": "Y",
+     "cvv_code": "M",
+     "response_code": "0000"
+    },
+    "supplementary_data": {
+     "related_ids": {
+      "order_id": "0YU178735B802730T"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:08.946Z"
+  },
+  {
+   "id": "ppc_A3GDCX9LcWv3Ck",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_CFpHk",
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_CFpHk",
+   "http_status": 201,
+   "resource_id": "7FB36410VW5193304",
+   "resource_status": "COMPLETED; auth=DENIED",
+   "debug_id": "ca4b5a01f9d88",
+   "latency_ms": 2594,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "card": {
+       "name": "CCREJECT-REFUSED",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "10.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_CFpHk",
+       "invoice_id": "tab-proofL8y5vV-fan_CFpHk",
+       "description": "Hold up to $10.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_CFpHk"
+    }
+   },
+   "response_redacted": {
+    "id": "7FB36410VW5193304",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/7FB36410VW5193304",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:17:10Z",
+    "update_time": "2026-10-16T08:17:10Z",
+    "payment_source": {
+     "card": {
+      "name": "CCREJECT-REFUSED",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "10.00",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "0D294189JB003390R",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/0D294189JB003390R",
+           "method": "GET"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/7FB36410VW5193304",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "10.00",
+          "currency_code": "USD"
+         },
+         "status": "DENIED",
+         "custom_id": "proofL8y5vV-fan_CFpHk",
+         "invoice_id": "tab-proofL8y5vV-fan_CFpHk",
+         "create_time": "2026-10-16T08:17:10Z",
+         "update_time": "2026-10-16T08:17:10Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "G",
+          "cvv_code": "P",
+          "response_code": "0500"
+         },
+         "network_transaction_reference": {
+          "id": "[redacted-pan]",
+          "date": "0203",
+          "network": "VISA"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_CFpHk",
+      "invoice_id": "tab-proofL8y5vV-fan_CFpHk",
+      "description": "Hold up to $10.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:11.545Z"
+  },
+  {
+   "id": "ppc_QEi6p2Zdic2Lp5",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_DYZmN",
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_DYZmN",
+   "http_status": 201,
+   "resource_id": "4HM0053164626273R",
+   "resource_status": "CREATED",
+   "debug_id": "ca4b5a02fdb1b",
+   "latency_ms": 617,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "20.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_DYZmN",
+       "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+       "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ],
+     "application_context": {
+      "brand_name": "AnswerTab",
+      "user_action": "CONTINUE",
+      "shipping_preference": "NO_SHIPPING"
+     }
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_DYZmN"
+    }
+   },
+   "response_redacted": {
+    "id": "4HM0053164626273R",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+      "method": "GET"
+     },
+     {
+      "rel": "approve",
+      "href": "https://www.sandbox.paypal.com/checkoutnow?token=4HM0053164626273R",
+      "method": "GET"
+     },
+     {
+      "rel": "update",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+      "method": "PATCH"
+     },
+     {
+      "rel": "authorize",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R/authorize",
+      "method": "POST"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "CREATED",
+    "create_time": "2026-10-16T08:17:11Z",
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "display_data": {
+        "brand_name": "AnswerTab"
+       },
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "currency_code": "USD"
+      },
+      "custom_id": "proofL8y5vV-fan_DYZmN",
+      "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "AnswerTab"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:12.168Z"
+  },
+  {
+   "id": "ppc_nEFcj3XabrbDpn",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_DYZmN",
+   "op": "proof.orders.confirm",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders/4HM0053164626273R/confirm-payment-source",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "4HM0053164626273R",
+   "resource_status": "APPROVED",
+   "debug_id": "ca4b5a033bc46",
+   "latency_ms": 1125,
+   "request_redacted": {
+    "body": {
+     "payment_source": {
+      "card": {
+       "name": "[redacted]",
+       "expiry": "[redacted]",
+       "number": "[redacted]",
+       "security_code": "[redacted]",
+       "billing_address": "[redacted]"
+      }
+     }
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json"
+    }
+   },
+   "response_redacted": {
+    "id": "4HM0053164626273R",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+      "method": "GET"
+     },
+     {
+      "rel": "authorize",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R/authorize",
+      "method": "POST"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "APPROVED",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "display_data": {
+        "brand_name": "AnswerTab"
+       },
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "currency_code": "USD"
+      },
+      "custom_id": "proofL8y5vV-fan_DYZmN",
+      "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "AnswerTab"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:13.296Z"
+  },
+  {
+   "id": "ppc_BFyXosKDHoc1Ng",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_DYZmN",
+   "op": "orders.authorize",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders/4HM0053164626273R/authorize",
+   "request_id": "auth-proofL8y5vV-fan_DYZmN",
+   "http_status": 201,
+   "resource_id": "4HM0053164626273R",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "ca4b5a03ace3e",
+   "latency_ms": 1780,
+   "request_redacted": {
+    "body": null,
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "auth-proofL8y5vV-fan_DYZmN"
+    }
+   },
+   "response_redacted": {
+    "id": "4HM0053164626273R",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:17:14Z",
+    "update_time": "2026-10-16T08:17:14Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "display_data": {
+        "brand_name": "AnswerTab"
+       },
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "currency_code": "USD"
+      },
+      "payments": {
+       "authorizations": [
+        {
+         "id": "50M31695U7484020X",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "20.00",
+          "currency_code": "USD"
+         },
+         "status": "CREATED",
+         "custom_id": "proofL8y5vV-fan_DYZmN",
+         "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+         "create_time": "2026-10-16T08:17:14Z",
+         "update_time": "2026-10-16T08:17:14Z",
+         "expiration_time": "2026-11-14T08:17:14Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "305741342679529",
+          "network": "VISA"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_DYZmN",
+      "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:15.082Z"
+  },
+  {
+   "id": "ppc_7AHdBBGM8HtYNJ",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_DYZmN",
+   "op": "payments.capture",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/50M31695U7484020X/capture",
+   "request_id": "settle-proofL8y5vV-fan_DYZmN",
+   "http_status": 422,
+   "resource_id": null,
+   "resource_status": "AUTHORIZATION_EXPIRED",
+   "debug_id": "ca4b5a045e99d",
+   "latency_ms": 328,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "5.00",
+      "currency_code": "USD"
+     },
+     "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+     "final_capture": true,
+     "note_to_payer": "mock"
+    },
+    "fan_id": "fan_DYZmN",
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "settle-proofL8y5vV-fan_DYZmN",
+     "paypal-mock-response": "{\"mock_application_codes\":\"AUTHORIZATION_EXPIRED\"}"
+    },
+    "authorization_id": "50M31695U7484020X"
+   },
+   "response_redacted": {
+    "name": "UNPROCESSABLE_ENTITY",
+    "links": [
+     {
+      "rel": "information_link",
+      "href": "https://developer.paypal.com/docs/limited-release/orders/api/#error-AUTHORIZATION_EXPIRED",
+      "method": "GET"
+     }
+    ],
+    "details": [
+     {
+      "issue": "AUTHORIZATION_EXPIRED",
+      "description": "An expired authorization cannot be captured."
+     }
+    ],
+    "message": "The requested action could not be performed, semantically incorrect, or failed business validation.",
+    "debug_id": "70c28ae654da"
+   },
+   "created_at": "2026-10-16T08:17:15.413Z"
+  },
+  {
+   "id": "ppc_yHW2bQT33usHF4",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_DYZmN",
+   "op": "payments.capture",
+   "method": "POST",
+   "endpoint": "/v2/payments/authorizations/50M31695U7484020X/capture",
+   "request_id": "settle-proofL8y5vV-fan_DYZmN-a1",
+   "http_status": 201,
+   "resource_id": "7BB55672H9481991W",
+   "resource_status": "COMPLETED",
+   "debug_id": "ca4b5a047fa53",
+   "latency_ms": 1808,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "5.00",
+      "currency_code": "USD"
+     },
+     "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+     "final_capture": true,
+     "note_to_payer": "AnswerTab: Q2 answered (proof run)."
+    },
+    "fan_id": "fan_DYZmN",
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "settle-proofL8y5vV-fan_DYZmN-a1"
+    },
+    "authorization_id": "50M31695U7484020X"
+   },
+   "response_redacted": {
+    "id": "7BB55672H9481991W",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/7BB55672H9481991W",
+      "method": "GET"
+     },
+     {
+      "rel": "refund",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/7BB55672H9481991W/refund",
+      "method": "POST"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X",
+      "method": "GET"
+     }
+    ],
+    "amount": {
+     "value": "5.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_DYZmN",
+    "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+    "create_time": "2026-10-16T08:17:16Z",
+    "update_time": "2026-10-16T08:17:16Z",
+    "final_capture": true,
+    "seller_protection": {
+     "status": "NOT_ELIGIBLE"
+    },
+    "seller_receivable_breakdown": {
+     "net_amount": {
+      "value": "4.38",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.62",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "5.00",
+      "currency_code": "USD"
+     },
+     "exchange_rate": {}
+    },
+    "network_transaction_reference": {
+     "id": "305741342679529",
+     "network": "VISA"
+    }
+   },
+   "created_at": "2026-10-16T08:17:17.223Z"
+  },
+  {
+   "id": "ppc_LhSuGRXQNy6qek",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_EPekR",
+   "op": "orders.create",
+   "method": "POST",
+   "endpoint": "/v2/checkout/orders",
+   "request_id": "order-proofL8y5vV-fan_EPekR",
+   "http_status": 200,
+   "resource_id": "45E67558591071613",
+   "resource_status": "PAYER_ACTION_REQUIRED",
+   "debug_id": "ca4b5a0534de0",
+   "latency_ms": 817,
+   "request_redacted": {
+    "body": {
+     "intent": "AUTHORIZE",
+     "payment_source": {
+      "paypal": {
+       "experience_context": {
+        "brand_name": "AnswerTab",
+        "user_action": "CONTINUE",
+        "shipping_preference": "NO_SHIPPING"
+       }
+      }
+     },
+     "purchase_units": [
+      {
+       "amount": {
+        "value": "20.00",
+        "currency_code": "USD"
+       },
+       "custom_id": "proofL8y5vV-fan_EPekR",
+       "invoice_id": "tab-proofL8y5vV-fan_EPekR",
+       "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+       "soft_descriptor": "AnswerTab"
+      }
+     ]
+    },
+    "headers": {
+     "prefer": "return=representation",
+     "content-type": "application/json",
+     "paypal-request-id": "order-proofL8y5vV-fan_EPekR"
+    }
+   },
+   "response_redacted": {
+    "id": "45E67558591071613",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/45E67558591071613",
+      "method": "GET"
+     },
+     {
+      "rel": "payer-action",
+      "href": "https://www.sandbox.paypal.com/checkoutnow?token=45E67558591071613",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "PAYER_ACTION_REQUIRED",
+    "payment_source": {
+     "paypal": {}
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "display_data": {
+        "brand_name": "AnswerTab"
+       },
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "currency_code": "USD"
+      },
+      "custom_id": "proofL8y5vV-fan_EPekR",
+      "invoice_id": "tab-proofL8y5vV-fan_EPekR",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "AnswerTab"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:18.042Z"
+  },
+  {
+   "id": "ppc_iBLwZnWg3WkgBP",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "b324f2e74d0e4",
+   "latency_ms": 1212,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:21.485Z"
+  },
+  {
+   "id": "ppc_eZ4znJ76h6F5jk",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "refunds.create:toolkit",
+   "method": "POST",
+   "endpoint": "/v2/payments/captures/9DP2030183371883J/refund",
+   "request_id": "refund-ct_proofL8y5vV",
+   "http_status": 201,
+   "resource_id": "01X78775LG7323300",
+   "resource_status": "COMPLETED",
+   "debug_id": "ea28541168788",
+   "latency_ms": 1475,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "capture_id": "9DP2030183371883J",
+     "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back."
+    },
+    "tool": "create_refund",
+    "headers": {
+     "content-type": "application/json",
+     "paypal-request-id": "refund-ct_proofL8y5vV"
+    }
+   },
+   "response_redacted": {
+    "id": "01X78775LG7323300",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+      "method": "GET"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     }
+    ],
+    "status": "COMPLETED"
+   },
+   "created_at": "2026-10-16T08:17:21.490Z"
+  },
+  {
+   "id": "ppc_nW2JU2581fVt8n",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "ce50a9694bbcb",
+   "latency_ms": 332,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:22.268Z"
+  },
+  {
+   "id": "ppc_uB8RzJdXYKZ7jg",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "refunds.get:toolkit",
+   "method": "GET",
+   "endpoint": "/v2/payments/refunds/01X78775LG7323300",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "01X78775LG7323300",
+   "resource_status": "COMPLETED",
+   "debug_id": "718285dc637f8",
+   "latency_ms": 437,
+   "request_redacted": {
+    "body": null,
+    "tool": "get_refund",
+    "headers": {
+     "content-type": "application/json"
+    }
+   },
+   "response_redacted": {
+    "id": "01X78775LG7323300",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+      "method": "GET"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     }
+    ],
+    "payer": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "3.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T01:17:20-07:00",
+    "update_time": "2026-10-16T01:17:20-07:00",
+    "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back.",
+    "seller_payable_breakdown": {
+     "net_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.00",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "total_refunded_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:22.270Z"
+  },
+  {
+   "id": "ppc_m1u2RC763nQN2k",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "fe97924997d70",
+   "latency_ms": 313,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:23.203Z"
+  },
+  {
+   "id": "ppc_tsA3F3xEqiu498",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "refunds.create:toolkit",
+   "method": "POST",
+   "endpoint": "/v2/payments/captures/9DP2030183371883J/refund",
+   "request_id": "refund-ct_proofL8y5vV",
+   "http_status": 200,
+   "resource_id": "01X78775LG7323300",
+   "resource_status": "COMPLETED",
+   "debug_id": "b52c7e47df314",
+   "latency_ms": 609,
+   "request_redacted": {
+    "body": {
+     "amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "capture_id": "9DP2030183371883J",
+     "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back."
+    },
+    "tool": "create_refund",
+    "headers": {
+     "content-type": "application/json",
+     "paypal-request-id": "refund-ct_proofL8y5vV"
+    }
+   },
+   "response_redacted": {
+    "id": "01X78775LG7323300",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+      "method": "GET"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     }
+    ],
+    "status": "COMPLETED"
+   },
+   "created_at": "2026-10-16T08:17:23.206Z"
+  },
+  {
+   "id": "ppc_k6p2Zr8WAjaLAt",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "2b1c7b18673ae",
+   "latency_ms": 279,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:24.173Z"
+  },
+  {
+   "id": "ppc_762zW41a9wVQ6v",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "refunds.get:toolkit",
+   "method": "GET",
+   "endpoint": "/v2/payments/refunds/01X78775LG7323300",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "01X78775LG7323300",
+   "resource_status": "COMPLETED",
+   "debug_id": "91287457f8ae0",
+   "latency_ms": 678,
+   "request_redacted": {
+    "body": null,
+    "tool": "get_refund",
+    "headers": {
+     "content-type": "application/json"
+    }
+   },
+   "response_redacted": {
+    "id": "01X78775LG7323300",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+      "method": "GET"
+     },
+     {
+      "rel": "up",
+      "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+      "method": "GET"
+     }
+    ],
+    "payer": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "3.00",
+     "currency_code": "USD"
+    },
+    "status": "COMPLETED",
+    "custom_id": "proofL8y5vV-fan_AiuQz",
+    "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+    "create_time": "2026-10-16T01:17:20-07:00",
+    "update_time": "2026-10-16T01:17:20-07:00",
+    "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back.",
+    "seller_payable_breakdown": {
+     "net_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "paypal_fee": {
+      "value": "0.00",
+      "currency_code": "USD"
+     },
+     "gross_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     },
+     "total_refunded_amount": {
+      "value": "3.00",
+      "currency_code": "USD"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:24.177Z"
+  },
+  {
+   "id": "ppc_HDHTp3LAsJTSp9",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "39083dac248ed",
+   "latency_ms": 389,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:25.932Z"
+  },
+  {
+   "id": "ppc_rXnbGgvakCxT98",
+   "room_id": "proofL8y5vV",
+   "tab_id": "tab_fan_AiuQz",
+   "op": "orders.get:toolkit",
+   "method": "GET",
+   "endpoint": "/v2/checkout/orders/5H484705A64509234",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "5H484705A64509234",
+   "resource_status": "COMPLETED; auth=CAPTURED",
+   "debug_id": "543c4c867f4d6",
+   "latency_ms": 1356,
+   "request_redacted": {
+    "body": null,
+    "tool": "get_order",
+    "headers": {
+     "content-type": "application/json"
+    }
+   },
+   "response_redacted": {
+    "id": "5H484705A64509234",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/5H484705A64509234",
+      "method": "GET"
+     }
+    ],
+    "intent": "AUTHORIZE",
+    "status": "COMPLETED",
+    "create_time": "2026-10-16T08:16:59Z",
+    "update_time": "2026-10-16T08:17:01Z",
+    "payment_source": {
+     "card": {
+      "name": "[redacted]",
+      "type": "UNKNOWN",
+      "brand": "VISA",
+      "expiry": "[redacted]",
+      "bin_details": {},
+      "last_digits": "1111"
+     }
+    },
+    "purchase_units": [
+     {
+      "payee": {
+       "merchant_id": "GYWQWW2DYGMFE",
+       "email_address": "sb-u***@business.example.com"
+      },
+      "amount": {
+       "value": "20.00",
+       "breakdown": {},
+       "currency_code": "USD"
+      },
+      "payments": {
+       "refunds": [
+        {
+         "id": "01X78775LG7323300",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+           "method": "GET"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "3.00",
+          "currency_code": "USD"
+         },
+         "status": "COMPLETED",
+         "custom_id": "proofL8y5vV-fan_AiuQz",
+         "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+         "create_time": "2026-10-16T01:17:20-07:00",
+         "update_time": "2026-10-16T01:17:20-07:00",
+         "note_to_payer": "AnswerTab: contest upheld for Q1, $3.00 back.",
+         "seller_payable_breakdown": {
+          "net_amount": {
+           "value": "3.00",
+           "currency_code": "USD"
+          },
+          "paypal_fee": {
+           "value": "0.00",
+           "currency_code": "USD"
+          },
+          "gross_amount": {
+           "value": "3.00",
+           "currency_code": "USD"
+          },
+          "platform_fees": [
+           {
+            "amount": {
+             "value": "0.00",
+             "currency_code": "USD"
+            }
+           }
+          ],
+          "total_refunded_amount": {
+           "value": "3.00",
+           "currency_code": "USD"
+          }
+         }
+        }
+       ],
+       "captures": [
+        {
+         "id": "9DP2030183371883J",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+           "method": "GET"
+          },
+          {
+           "rel": "refund",
+           "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J/refund",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "7.00",
+          "currency_code": "USD"
+         },
+         "status": "PARTIALLY_REFUNDED",
+         "custom_id": "proofL8y5vV-fan_AiuQz",
+         "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+         "create_time": "2026-10-16T08:17:01Z",
+         "update_time": "2026-10-16T08:17:20Z",
+         "final_capture": true,
+         "disbursement_mode": "INSTANT",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "seller_receivable_breakdown": {
+          "net_amount": {
+           "value": "6.33",
+           "currency_code": "USD"
+          },
+          "paypal_fee": {
+           "value": "0.67",
+           "currency_code": "USD"
+          },
+          "gross_amount": {
+           "value": "7.00",
+           "currency_code": "USD"
+          }
+         },
+         "network_transaction_reference": {
+          "id": "[redacted-pan]",
+          "network": "VISA"
+         }
+        }
+       ],
+       "authorizations": [
+        {
+         "id": "4YR07924YA817361L",
+         "links": [
+          {
+           "rel": "self",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L",
+           "method": "GET"
+          },
+          {
+           "rel": "capture",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/capture",
+           "method": "POST"
+          },
+          {
+           "rel": "void",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/void",
+           "method": "POST"
+          },
+          {
+           "rel": "reauthorize",
+           "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/4YR07924YA817361L/reauthorize",
+           "method": "POST"
+          },
+          {
+           "rel": "up",
+           "href": "https://api.sandbox.paypal.com/v2/checkout/orders/5H484705A64509234",
+           "method": "GET"
+          }
+         ],
+         "amount": {
+          "value": "20.00",
+          "currency_code": "USD"
+         },
+         "status": "CAPTURED",
+         "custom_id": "proofL8y5vV-fan_AiuQz",
+         "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+         "create_time": "2026-10-16T08:16:59Z",
+         "update_time": "2026-10-16T08:17:01Z",
+         "expiration_time": "2026-11-14T08:16:59Z",
+         "seller_protection": {
+          "status": "NOT_ELIGIBLE"
+         },
+         "processor_response": {
+          "avs_code": "A",
+          "cvv_code": "M",
+          "response_code": "0000"
+         },
+         "network_transaction_reference": {
+          "id": "[redacted-pan]",
+          "network": "VISA"
+         }
+        }
+       ]
+      },
+      "custom_id": "proofL8y5vV-fan_AiuQz",
+      "invoice_id": "tab-proofL8y5vV-fan_AiuQz",
+      "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+      "reference_id": "default",
+      "soft_descriptor": "ANSWERTAB"
+     }
+    ]
+   },
+   "created_at": "2026-10-16T08:17:25.935Z"
+  },
+  {
+   "id": "ppc_x47ETNoDftyBTj",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "toolkit.oauth.token",
+   "method": "POST",
+   "endpoint": "/v1/oauth2/token",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "9d74d2affb793",
+   "latency_ms": 698,
+   "request_redacted": null,
+   "response_redacted": null,
+   "created_at": "2026-10-16T08:17:27.064Z"
+  },
+  {
+   "id": "ppc_BS93d1jQ7JBJ5t",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "disputes.get:toolkit",
+   "method": "GET",
+   "endpoint": "/v1/customer/disputes/PP-D-PROOFL8y5vV",
+   "request_id": null,
+   "http_status": 404,
+   "resource_id": null,
+   "resource_status": "RESOURCE_NOT_FOUND",
+   "debug_id": "f738cf9548912",
+   "latency_ms": 418,
+   "request_redacted": {
+    "body": null,
+    "tool": "get_dispute",
+    "headers": {
+     "content-type": "application/json"
+    }
+   },
+   "response_redacted": {
+    "name": "RESOURCE_NOT_FOUND",
+    "links": [],
+    "details": [
+     {
+      "issue": "RESOURCE_NOT_FOUND"
+     }
+    ],
+    "message": "The specified resource does not exist.",
+    "debug_id": "f738cf9548912",
+    "information_link": "https://developer.paypal.com/docs/api/customer-disputes/v1/#errors"
+   },
+   "created_at": "2026-10-16T08:17:27.065Z"
+  },
+  {
+   "id": "ppc_U3KWjiGF3kj9pT",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payouts.create",
+   "method": "POST",
+   "endpoint": "/v1/payments/payouts",
+   "request_id": "payout-proofL8y5vV-1",
+   "http_status": 201,
+   "resource_id": "RVH4PCJL3VCZU",
+   "resource_status": "PENDING",
+   "debug_id": "ca4b5a0909f72",
+   "latency_ms": 1312,
+   "request_redacted": {
+    "body": {
+     "items": [
+      {
+       "note": "AnswerTab sandbox proof payout",
+       "amount": {
+        "value": "1.00",
+        "currency": "USD"
+       },
+       "receiver": "sb-u***@personal.example.com",
+       "recipient_type": "EMAIL",
+       "sender_item_id": "payout-proofL8y5vV-1-1"
+      }
+     ],
+     "sender_batch_header": {
+      "email_message": "AnswerTab sandbox proof payout",
+      "email_subject": "Your AnswerTab payout",
+      "sender_batch_id": "payout-proofL8y5vV-1"
+     }
+    },
+    "headers": {
+     "content-type": "application/json",
+     "paypal-request-id": "payout-proofL8y5vV-1"
+    }
+   },
+   "response_redacted": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU",
+      "method": "GET",
+      "encType": "application/json"
+     }
+    ],
+    "batch_header": {
+     "batch_status": "PENDING",
+     "payout_batch_id": "RVH4PCJL3VCZU",
+     "sender_batch_header": {
+      "email_message": "AnswerTab sandbox proof payout",
+      "email_subject": "Your AnswerTab payout",
+      "sender_batch_id": "payout-proofL8y5vV-1"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:28.382Z"
+  },
+  {
+   "id": "ppc_HWWRTvj85uqG6B",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payouts.get",
+   "method": "GET",
+   "endpoint": "/v1/payments/payouts/RVH4PCJL3VCZU",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "RVH4PCJL3VCZU",
+   "resource_status": "PENDING",
+   "debug_id": "ca4b5a098d8d4",
+   "latency_ms": 848,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "items": [
+     {
+      "links": [
+       {
+        "rel": "item",
+        "href": "https://api.sandbox.paypal.com/v1/payments/payouts-item/W48R3GQYYKD32",
+        "method": "GET",
+        "encType": "application/json"
+       }
+      ],
+      "payout_item": {
+       "note": "AnswerTab sandbox proof payout",
+       "amount": {
+        "value": "1.00",
+        "currency": "USD"
+       },
+       "purpose": "GOODS",
+       "receiver": "sb-u***@personal.example.com",
+       "recipient_type": "EMAIL",
+       "sender_item_id": "payout-proofL8y5vV-1-1",
+       "recipient_wallet": "PAYPAL"
+      },
+      "payout_item_id": "W48R3GQYYKD32",
+      "payout_batch_id": "RVH4PCJL3VCZU",
+      "transaction_status": "PENDING"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU?page_size=1000&page=1",
+      "method": "GET",
+      "encType": "application/json"
+     }
+    ],
+    "batch_header": {
+     "amount": {
+      "value": "1.00",
+      "currency": "USD"
+     },
+     "batch_status": "PENDING",
+     "time_created": "2026-10-16T08:17:28Z",
+     "funding_source": "BALANCE",
+     "payout_batch_id": "RVH4PCJL3VCZU",
+     "sender_batch_header": {
+      "email_message": "AnswerTab sandbox proof payout",
+      "email_subject": "Your AnswerTab payout",
+      "sender_batch_id": "payout-proofL8y5vV-1"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:29.235Z"
+  },
+  {
+   "id": "ppc_Cq9pJYw32dn3Ar",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payouts.create",
+   "method": "POST",
+   "endpoint": "/v1/payments/payouts",
+   "request_id": "payout-proofL8y5vV-1",
+   "http_status": 400,
+   "resource_id": null,
+   "resource_status": "Batch with given sender_batch_id already exists",
+   "debug_id": "ca4b5a09e2e8c",
+   "latency_ms": 491,
+   "request_redacted": {
+    "body": {
+     "items": [
+      {
+       "note": "AnswerTab sandbox proof payout",
+       "amount": {
+        "value": "1.00",
+        "currency": "USD"
+       },
+       "receiver": "sb-u***@personal.example.com",
+       "recipient_type": "EMAIL",
+       "sender_item_id": "payout-proofL8y5vV-1-1"
+      }
+     ],
+     "sender_batch_header": {
+      "email_message": "AnswerTab sandbox proof payout",
+      "email_subject": "Your AnswerTab payout",
+      "sender_batch_id": "payout-proofL8y5vV-1"
+     }
+    },
+    "headers": {
+     "content-type": "application/json",
+     "paypal-request-id": "payout-proofL8y5vV-1"
+    }
+   },
+   "response_redacted": {
+    "name": "USER_BUSINESS_ERROR",
+    "links": [],
+    "details": [
+     {
+      "link": [
+       {
+        "rel": "self",
+        "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU",
+        "method": "GET",
+        "encType": "application/json"
+       }
+      ],
+      "field": "SENDER_BATCH_ID",
+      "issue": "Batch with given sender_batch_id already exists",
+      "location": "body"
+     }
+    ],
+    "message": "User business error.",
+    "debug_id": "ca4b5a09e2e8c",
+    "information_link": "https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"
+   },
+   "created_at": "2026-10-16T08:17:29.731Z"
+  },
+  {
+   "id": "ppc_6qUGQVnjUofMN6",
+   "room_id": "proofL8y5vV",
+   "tab_id": null,
+   "op": "payouts.get",
+   "method": "GET",
+   "endpoint": "/v1/payments/payouts/RVH4PCJL3VCZU",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": "RVH4PCJL3VCZU",
+   "resource_status": "PENDING",
+   "debug_id": "ca4b5a0a149f9",
+   "latency_ms": 436,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "items": [
+     {
+      "links": [
+       {
+        "rel": "item",
+        "href": "https://api.sandbox.paypal.com/v1/payments/payouts-item/W48R3GQYYKD32",
+        "method": "GET",
+        "encType": "application/json"
+       }
+      ],
+      "payout_item": {
+       "note": "AnswerTab sandbox proof payout",
+       "amount": {
+        "value": "1.00",
+        "currency": "USD"
+       },
+       "purpose": "GOODS",
+       "receiver": "sb-u***@personal.example.com",
+       "recipient_type": "EMAIL",
+       "sender_item_id": "payout-proofL8y5vV-1-1",
+       "recipient_wallet": "PAYPAL"
+      },
+      "payout_item_id": "W48R3GQYYKD32",
+      "payout_batch_id": "RVH4PCJL3VCZU",
+      "transaction_status": "PENDING"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU?page_size=1000&page=1",
+      "method": "GET",
+      "encType": "application/json"
+     }
+    ],
+    "batch_header": {
+     "amount": {
+      "value": "1.00",
+      "currency": "USD"
+     },
+     "batch_status": "PENDING",
+     "time_created": "2026-10-16T08:17:28Z",
+     "funding_source": "BALANCE",
+     "payout_batch_id": "RVH4PCJL3VCZU",
+     "sender_batch_header": {
+      "email_message": "AnswerTab sandbox proof payout",
+      "email_subject": "Your AnswerTab payout",
+      "sender_batch_id": "payout-proofL8y5vV-1"
+     }
+    }
+   },
+   "created_at": "2026-10-16T08:17:30.171Z"
+  },
+  {
+   "id": "ppc_opKofGgjRoAgQc",
+   "room_id": null,
+   "tab_id": null,
+   "op": "balances.get",
+   "method": "GET",
+   "endpoint": "/v1/reporting/balances",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "1 currencies",
+   "debug_id": "ca4b5a0a40d09",
+   "latency_ms": 396,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "balances": [
+     {
+      "currency": "USD",
+      "total_balance": {
+       "value": "5001.18",
+       "currency_code": "USD"
+      },
+      "withheld_balance": {
+       "value": "0.00",
+       "currency_code": "USD"
+      },
+      "available_balance": {
+       "value": "5001.18",
+       "currency_code": "USD"
+      }
+     }
+    ],
+    "account_id": "GYWQWW2DYGMFE",
+    "as_of_time": "2026-10-16T04:59:59Z",
+    "last_refresh_time": "2026-10-16T04:59:59Z"
+   },
+   "created_at": "2026-10-16T08:17:30.571Z"
+  },
+  {
+   "id": "ppc_M3iYaep7p2qxFp",
+   "room_id": null,
+   "tab_id": null,
+   "op": "webhooks.list",
+   "method": "GET",
+   "endpoint": "/v1/notifications/webhooks",
+   "request_id": null,
+   "http_status": 200,
+   "resource_id": null,
+   "resource_status": "0 webhooks",
+   "debug_id": "ca4b5a0a68820",
+   "latency_ms": 363,
+   "request_redacted": {
+    "body": null,
+    "headers": {}
+   },
+   "response_redacted": {
+    "webhooks": []
+   },
+   "created_at": "2026-10-16T08:17:30.939Z"
+  }
+ ]
+}

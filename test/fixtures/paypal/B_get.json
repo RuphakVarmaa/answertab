@@ -1,0 +1,65 @@
+{
+ "status": 200,
+ "ms": 584,
+ "debug_id": "f1709322c3718",
+ "body": {
+  "id": "3UW07605EH995784T",
+  "status": "CAPTURED",
+  "amount": {
+   "currency_code": "USD",
+   "value": "10.00"
+  },
+  "custom_id": "heard-spike-d4f240a1",
+  "seller_protection": {
+   "status": "NOT_ELIGIBLE"
+  },
+  "processor_response": {
+   "avs_code": "A",
+   "cvv_code": "M",
+   "response_code": "0000"
+  },
+  "supplementary_data": {
+   "related_ids": {
+    "order_id": "2BJ50537YH418494U"
+   }
+  },
+  "payee": {
+   "email_address": "sb-uycio53304181@business.example.com",
+   "merchant_id": "GYWQWW2DYGMFE"
+  },
+  "expiration_time": "2026-11-14T06:43:09Z",
+  "create_time": "2026-10-16T06:43:09Z",
+  "update_time": "2026-10-16T06:43:14Z",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/3UW07605EH995784T",
+    "rel": "self",
+    "method": "GET"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/3UW07605EH995784T/capture",
+    "rel": "capture",
+    "method": "POST"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/3UW07605EH995784T/void",
+    "rel": "void",
+    "method": "POST"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/3UW07605EH995784T/reauthorize",
+    "rel": "reauthorize",
+    "method": "POST"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/2BJ50537YH418494U",
+    "rel": "up",
+    "method": "GET"
+   }
+  ],
+  "network_transaction_reference": {
+   "id": "170112118720908",
+   "network": "VISA"
+  }
+ }
+}

@@ -1,0 +1,295 @@
+/* Fan page: a phone layout first. Wider screens get the same column, centered. */
+.fan {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.fan__bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--gutter);
+  padding-top: max(var(--s-2), env(safe-area-inset-top));
+  border-bottom: 1px solid var(--c-line);
+  background: color-mix(in srgb, var(--c-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.fan__bar .logo,
+.fan__bar .logo svg {
+  flex: none;
+}
+.fan__bar .logo svg {
+  width: 26px;
+  height: 26px;
+}
+.fan__title {
+  display: grid;
+  min-width: 0;
+}
+.fan__room {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: var(--fs-md);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fan__main {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: var(--s-4) var(--gutter) var(--s-8);
+  display: grid;
+  gap: var(--s-6);
+  align-content: start;
+  flex: 1;
+}
+.fan__foot {
+  text-align: center;
+  padding: var(--s-4) var(--gutter) max(var(--s-5), env(safe-area-inset-bottom));
+}
+
+.explainer {
+  display: grid;
+  gap: var(--s-3);
+}
+.explainer__title {
+  font-size: var(--fs-2xl);
+}
+.explainer__list {
+  list-style: none;
+  display: grid;
+  gap: var(--s-2);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-2);
+}
+.explainer__list li {
+  display: flex;
+  gap: var(--s-2);
+  align-items: flex-start;
+}
+.explainer__list svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 1px;
+  color: var(--c-ok);
+}
+.fan__prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line);
+}
+.fan__prices strong {
+  color: var(--c-ink);
+}
+.join {
+  display: grid;
+  gap: var(--s-3);
+}
+.input--lg {
+  min-height: 52px;
+  font-size: var(--fs-lg);
+  border-radius: var(--r-lg);
+}
+
+/* Hold picker */
+.holdpick {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+.holdpick__opt {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  padding: var(--s-3) var(--s-2);
+  border-radius: var(--r-lg);
+  border: 1.5px solid var(--c-line-strong);
+  background: var(--c-surface);
+  transition:
+    border-color var(--dur-1),
+    box-shadow var(--dur-2),
+    transform var(--dur-1);
+}
+.holdpick__opt strong {
+  font-size: var(--fs-2xl);
+  font-family: var(--font-display);
+  line-height: 1.1;
+}
+.holdpick__opt[aria-checked='true'] {
+  border-color: var(--c-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-ink) 12%, transparent);
+}
+.holdpick__opt:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Checkout */
+.checkout {
+  animation: fadeIn var(--dur-3) var(--ease-out);
+}
+.testcard {
+  display: grid;
+  gap: var(--s-1);
+  margin: var(--s-2) 0;
+}
+.testcard__meta {
+  font-size: var(--fs-xs);
+}
+.cardform {
+  display: grid;
+  gap: var(--s-3);
+}
+.cardform__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2) var(--s-3);
+}
+.cf {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.cf:first-child,
+.cf--wide {
+  grid-column: 1 / -1;
+}
+.cf__label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-ink-2);
+}
+/* The SDK's field element is height: 100%, so the container needs a definite height. */
+.cf__box {
+  height: 50px;
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  overflow: hidden;
+}
+.cf__box:focus-within {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px var(--c-accent-soft);
+}
+
+/* My tab */
+.mytab {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
+  box-shadow: var(--sh-1);
+}
+.mytab__title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  margin-right: auto;
+}
+.mytab__nums {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-2);
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+}
+.mytab__nums strong {
+  font-size: var(--fs-xl);
+  color: var(--c-ink);
+  margin-right: 2px;
+}
+.mytab__settled {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: var(--s-2);
+}
+.mytab__settled > div {
+  display: grid;
+  gap: 2px;
+}
+.mytab__settled strong {
+  font-size: var(--fs-2xl);
+  font-family: var(--font-display);
+}
+
+/* Answer moment */
+.moment {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--tone-line);
+  background: linear-gradient(180deg, var(--tone-bg), var(--c-surface));
+  box-shadow: var(--sh-2);
+  transform-origin: 50% 0;
+  animation: flipIn 600ms var(--ease-out);
+}
+.moment__q {
+  font-weight: 600;
+}
+.moment .quote__text {
+  font-size: var(--fs-lg);
+}
+
+/* Ask */
+.ask {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--c-line);
+  background: var(--c-surface-2);
+}
+.similar {
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  flex-wrap: wrap;
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-md);
+  background: var(--c-info-bg);
+  border: 1px solid var(--c-info-line);
+  font-size: var(--fs-sm);
+  animation: fadeIn var(--dur-3) var(--ease-out);
+}
+.similar > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--c-info);
+  flex: none;
+}
+.similar > span {
+  flex: 1 1 180px;
+}
+
+/* Embedded in the presentation strip: bigger type, no chrome. */
+.fan--embed {
+  font-size: 1.06rem;
+}
+.fan--embed .fan__main {
+  padding-top: var(--s-3);
+  gap: var(--s-4);
+}
+.fan--embed .qcard__text {
+  font-size: var(--fs-xl);
+}
+.fan--embed .explainer__list {
+  display: none;
+}
+/* Room for the phone frame's notch. */
+.fan--embed .fan__bar {
+  padding-top: 26px;
+}

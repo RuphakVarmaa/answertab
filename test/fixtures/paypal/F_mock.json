@@ -1,0 +1,23 @@
+{
+ "status": 422,
+ "ms": 804,
+ "debug_id": "f134684379619",
+ "body": {
+  "name": "UNPROCESSABLE_ENTITY",
+  "details": [
+   {
+    "issue": "AUTHORIZATION_EXPIRED",
+    "description": "An expired authorization cannot be captured."
+   }
+  ],
+  "message": "The requested action could not be performed, semantically incorrect, or failed business validation.",
+  "debug_id": "70c28ae654da",
+  "links": [
+   {
+    "href": "https://developer.paypal.com/docs/limited-release/orders/api/#error-AUTHORIZATION_EXPIRED",
+    "rel": "information_link",
+    "method": "GET"
+   }
+  ]
+ }
+}

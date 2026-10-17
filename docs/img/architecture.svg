@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-labelledby="t d">
+  <title id="t">AnswerTab architecture</title>
+  <desc id="d">Creator browser, fan phones and the overlay talk to one Fastify service over HTTP and SSE. Inside it, the Haiku detector points at words, a pure-code guard cuts the quote, big locks get an Opus re-check, the creator approves at End, and settlement captures once per fan. The contest desk proposes a finding; code computes and gates every refund. All PayPal I/O, request IDs and the ledger live in paypal/. Externals: Anthropic API, PayPal sandbox, Postgres or PGlite.</desc>
+  <style>
+    svg { --bg: #fbfaf7; --fg: #1b1b1f; --muted: #5b5d66; --box: #ffffff; --stroke: #c9c6bd; --lane: #f2f0ea; --ai: #3f5bd9; --money: #12805c; --rule: #fff4d6; --rule-stroke: #d9b45a; }
+    @media (prefers-color-scheme: dark) {
+      svg { --bg: #16171b; --fg: #ecebe6; --muted: #a3a5ad; --box: #202228; --stroke: #474a54; --lane: #1c1d22; --ai: #8fa3ff; --money: #4fcf9f; --rule: #2e2817; --rule-stroke: #8a7330; }
+    }
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--fg); }
+    .bg { fill: var(--bg); }
+    .box { fill: var(--box); stroke: var(--stroke); stroke-width: 1.2; }
+    .lane { fill: var(--lane); stroke: var(--stroke); stroke-width: 1; stroke-dasharray: 4 3; }
+    .svc { fill: none; stroke: var(--fg); stroke-width: 1.5; }
+    .ai { stroke: var(--ai); stroke-width: 1.6; }
+    .money { stroke: var(--money); stroke-width: 1.6; }
+    .rule { fill: var(--rule); stroke: var(--rule-stroke); stroke-width: 1.2; }
+    .h { font-size: 15px; font-weight: 650; }
+    .h2 { font-size: 13.5px; font-weight: 650; }
+    .s { font-size: 12.5px; fill: var(--muted); }
+    .m { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; fill: var(--muted); }
+    .lab { font-size: 12px; font-weight: 650; letter-spacing: 0.06em; fill: var(--muted); }
+    .ai-t { fill: var(--ai); }
+    .money-t { fill: var(--money); }
+    .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; marker-end: url(#head); }
+    .head { fill: var(--muted); }
+  </style>
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="head" d="M0 0 L10 5 L0 10 z" />
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="900" rx="14" />
+
+  <!-- The rule -->
+  <rect class="rule" x="20" y="18" width="1160" height="40" rx="8" />
+  <text class="h2" x="600" y="43" text-anchor="middle">The AI can release money on its own (void, refund up to $5). A charge needs a guard-passed quote and the creator's approval.</text>
+
+  <!-- Clients -->
+  <rect class="box" x="20" y="76" width="372" height="100" rx="10" />
+  <text class="h" x="206" y="100" text-anchor="middle">Creator browser (desktop Chrome)</text>
+  <text class="m" x="206" y="122" text-anchor="middle">/c/:room console, /demo/:room</text>
+  <text class="s" x="206" y="142" text-anchor="middle">Web Speech API turns speech into text;</text>
+  <text class="s" x="206" y="160" text-anchor="middle">Mic, Type or the demo replay; End, settle</text>
+
+  <rect class="box" x="414" y="76" width="372" height="100" rx="10" />
+  <text class="h" x="600" y="100" text-anchor="middle">Fan phones</text>
+  <text class="m" x="600" y="122" text-anchor="middle">/f/:room, receipts /r/:token</text>
+  <text class="s" x="600" y="142" text-anchor="middle">JS SDK v6 card fields or PayPal button;</text>
+  <text class="s" x="600" y="160" text-anchor="middle">ask, me too, Verify with PayPal, contest</text>
+
+  <rect class="box" x="808" y="76" width="372" height="100" rx="10" />
+  <text class="h" x="994" y="100" text-anchor="middle">Stream overlay</text>
+  <text class="m" x="994" y="122" text-anchor="middle">/o/:room</text>
+  <text class="s" x="994" y="142" text-anchor="middle">public room view for OBS or any</text>
+  <text class="s" x="994" y="160" text-anchor="middle">streaming tool; no money actions</text>
+
+  <path class="arrow" d="M206 176 V206" />
+  <path class="arrow" d="M600 176 V206" />
+  <path class="arrow" d="M994 176 V206" />
+  <text class="s" x="620" y="197">HTTP API + SSE room events</text>
+
+  <!-- The service -->
+  <rect class="svc" x="20" y="210" width="1160" height="550" rx="12" />
+  <text class="h" x="40" y="236">One Fastify service, Node 22</text>
+  <text class="m" x="268" y="236">routes/ → domain/ (rooms, tabs, questions, detection, settle, receipts, contests, payouts, disputes, webhooks) → sse.ts</text>
+
+  <!-- Lane A: answer detection -->
+  <rect class="lane" x="36" y="252" width="1128" height="150" rx="10" />
+  <text class="lab" x="52" y="274">ANSWER DETECTION · ai/ and domain/detection.ts</text>
+
+  <rect class="box ai" x="56" y="286" width="196" height="100" rx="8" />
+  <text class="h2" x="154" y="312" text-anchor="middle">Final segment</text>
+  <text class="s" x="154" y="334" text-anchor="middle">the server stamps it on</text>
+  <text class="s" x="154" y="352" text-anchor="middle">the room clock on arrival</text>
+
+  <rect class="box ai" x="279" y="286" width="196" height="100" rx="8" />
+  <text class="h2 ai-t" x="377" y="312" text-anchor="middle">Claude Haiku 5.5 detector</text>
+  <text class="s" x="377" y="334" text-anchor="middle">a verdict per open question</text>
+  <text class="s" x="377" y="352" text-anchor="middle">with a word-index span</text>
+  <text class="m" x="377" y="372" text-anchor="middle">detector.ts, scheduler.ts</text>
+
+  <rect class="box money" x="502" y="286" width="196" height="100" rx="8" />
+  <text class="h2 money-t" x="600" y="312" text-anchor="middle">Guard (pure code)</text>
+  <text class="s" x="600" y="334" text-anchor="middle">cuts the quote; ≥ 4 words,</text>
+  <text class="s" x="600" y="352" text-anchor="middle">timing, not a restatement</text>
+  <text class="m" x="600" y="372" text-anchor="middle">guard.ts, τ = 0.80</text>
+
+  <rect class="box ai" x="725" y="286" width="196" height="100" rx="8" />
+  <text class="h2 ai-t" x="823" y="312" text-anchor="middle">Claude Opus 5.5 verifier</text>
+  <text class="s" x="823" y="334" text-anchor="middle">re-checks locks ≥ $10</text>
+  <text class="s" x="823" y="352" text-anchor="middle">or with ≥ 3 fans</text>
+  <text class="m" x="823" y="372" text-anchor="middle">disagree → review</text>
+
+  <rect class="box" x="948" y="286" width="196" height="100" rx="8" />
+  <text class="h2" x="1046" y="312" text-anchor="middle">Card state</text>
+  <text class="s" x="1046" y="334" text-anchor="middle">locked, review or deflected</text>
+  <text class="s" x="1046" y="352" text-anchor="middle">still a hold: nothing</text>
+  <text class="s" x="1046" y="370" text-anchor="middle">is charged yet</text>
+
+  <path class="arrow" d="M252 336 H277" />
+  <path class="arrow" d="M475 336 H500" />
+  <path class="arrow" d="M698 336 H723" />
+  <path class="arrow" d="M921 336 H946" />
+
+  <!-- Lane B: money -->
+  <rect class="lane" x="36" y="414" width="1128" height="150" rx="10" />
+  <text class="lab" x="52" y="436">MONEY · domain/settle.ts, contests.ts, payouts.ts</text>
+
+  <rect class="box money" x="56" y="448" width="196" height="100" rx="8" />
+  <text class="h2" x="154" y="474" text-anchor="middle">End stream</text>
+  <text class="s" x="154" y="496" text-anchor="middle">the creator approves locks</text>
+  <text class="s" x="154" y="514" text-anchor="middle">and rates partials</text>
+  <text class="m" x="154" y="534" text-anchor="middle">Full, Half or None</text>
+
+  <rect class="box money" x="279" y="448" width="196" height="100" rx="8" />
+  <text class="h2 money-t" x="377" y="474" text-anchor="middle">Settle</text>
+  <text class="s" x="377" y="496" text-anchor="middle">one capture per fan with</text>
+  <text class="m" x="377" y="514" text-anchor="middle">final_capture: true</text>
+  <text class="s" x="377" y="534" text-anchor="middle">or a void; rest released</text>
+
+  <rect class="box ai" x="502" y="448" width="196" height="100" rx="8" />
+  <text class="h2 ai-t" x="600" y="474" text-anchor="middle">Opus 5.5 contest desk</text>
+  <text class="s" x="600" y="496" text-anchor="middle">reads card, transcript and</text>
+  <text class="s" x="600" y="514" text-anchor="middle">the order; returns a finding,</text>
+  <text class="s" x="600" y="532" text-anchor="middle">never an amount</text>
+
+  <rect class="box money" x="725" y="448" width="196" height="100" rx="8" />
+  <text class="h2 money-t" x="823" y="474" text-anchor="middle">Refund policy (code)</text>
+  <text class="s" x="823" y="496" text-anchor="middle">computes the share; refunds</text>
+  <text class="s" x="823" y="514" text-anchor="middle">≤ $5 alone, else the creator</text>
+  <text class="m" x="823" y="534" text-anchor="middle">contestPolicy.ts</text>
+
+  <rect class="box money" x="948" y="448" width="196" height="100" rx="8" />
+  <text class="h2" x="1046" y="474" text-anchor="middle">Payout</text>
+  <text class="s" x="1046" y="496" text-anchor="middle">after the contest window:</text>
+  <text class="s" x="1046" y="514" text-anchor="middle">capture nets − refunds</text>
+  <text class="s" x="1046" y="532" text-anchor="middle">− platform fee</text>
+
+  <path class="arrow" d="M252 498 H277" />
+  <path class="arrow" d="M475 498 H500" />
+  <path class="arrow" d="M698 498 H723" />
+  <path class="arrow" d="M921 498 H946" />
+
+  <!-- Lane C: PayPal I/O, jobs, budget -->
+  <rect class="box" x="36" y="578" width="560" height="166" rx="10" />
+  <text class="h2" x="54" y="602">paypal/ · every PayPal call goes through here</text>
+  <text class="s" x="54" y="624">Server SDK 2.5.0: Orders v2 create, authorize; Payments v2 capture, void, get</text>
+  <text class="s" x="54" y="644">Agent Toolkit 1.11.0: create_refund, get_refund, get_order, get_dispute</text>
+  <text class="s" x="54" y="664">typed fetch: Payouts v1, webhook verify and register, balances</text>
+  <text class="s" x="54" y="684">requestIds.ts: a deterministic PayPal-Request-Id on every write</text>
+  <text class="s" x="54" y="704">ledger.ts + redact.ts: every call to the paypal_calls ledger, debug IDs kept,</text>
+  <text class="s" x="54" y="722">card data, tokens and payer details removed</text>
+
+  <rect class="box" x="610" y="578" width="270" height="166" rx="10" />
+  <text class="h2" x="628" y="602">jobs/ sweeper</text>
+  <text class="s" x="628" y="624">row-locked and idempotent</text>
+  <text class="s" x="628" y="644">auto-end, auto-void at the</text>
+  <text class="s" x="628" y="662">approve deadline, contest</text>
+  <text class="s" x="628" y="680">window → payout, payout</text>
+  <text class="s" x="628" y="698">polling, settle retry,</text>
+  <text class="s" x="628" y="716">room expiry</text>
+
+  <rect class="box" x="894" y="578" width="270" height="166" rx="10" />
+  <text class="h2" x="912" y="602">Intake and budget</text>
+  <text class="s" x="912" y="624">Haiku 5.5 screens questions:</text>
+  <text class="s" x="912" y="642">abuse, injection, off-topic,</text>
+  <text class="s" x="912" y="660">"similar to #N"</text>
+  <text class="s" x="912" y="680">spend reserved before each call;</text>
+  <text class="s" x="912" y="698">a cap hit → manual confirm</text>
+  <text class="m" x="912" y="718">intake.ts, budget.ts</text>
+
+  <!-- Externals -->
+  <path class="arrow" d="M206 760 V790" />
+  <path class="arrow" d="M600 760 V790" />
+  <path class="arrow" d="M994 760 V790" />
+
+  <rect class="box" x="20" y="794" width="372" height="86" rx="10" />
+  <text class="h" x="206" y="822" text-anchor="middle">Anthropic API</text>
+  <text class="s" x="206" y="846" text-anchor="middle">Claude Haiku 5.5 and Claude Opus 5.5;</text>
+  <text class="s" x="206" y="864" text-anchor="middle">receives text only, never audio</text>
+
+  <rect class="box" x="414" y="794" width="372" height="86" rx="10" />
+  <text class="h" x="600" y="822" text-anchor="middle">PayPal sandbox</text>
+  <text class="s" x="600" y="846" text-anchor="middle">webhooks come back to /webhooks/paypal,</text>
+  <text class="s" x="600" y="864" text-anchor="middle">verified; they only reconcile</text>
+
+  <rect class="box" x="808" y="794" width="372" height="86" rx="10" />
+  <text class="h" x="994" y="822" text-anchor="middle">Postgres or PGlite</text>
+  <text class="s" x="994" y="846" text-anchor="middle">pg when DATABASE_URL is set, else</text>
+  <text class="s" x="994" y="864" text-anchor="middle">PGlite (in-process WASM Postgres)</text>
+</svg>

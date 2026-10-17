@@ -1,0 +1,25 @@
+{
+ "status": 201,
+ "ms": 1312,
+ "debug_id": "ca4b5a0909f72",
+ "source": "sandbox-proof run L8y5vV, op payouts.create (redacted ledger copy)",
+ "body": {
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU",
+    "method": "GET",
+    "encType": "application/json"
+   }
+  ],
+  "batch_header": {
+   "batch_status": "PENDING",
+   "payout_batch_id": "RVH4PCJL3VCZU",
+   "sender_batch_header": {
+    "email_message": "AnswerTab sandbox proof payout",
+    "email_subject": "Your AnswerTab payout",
+    "sender_batch_id": "payout-proofL8y5vV-1"
+   }
+  }
+ }
+}

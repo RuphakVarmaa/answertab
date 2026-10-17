@@ -1,0 +1,83 @@
+# Live smoke check of the hosted demo every 30 minutes: GET /healthz and /api/status, and fail when a check
+# that changes what a judge sees is not ok (or is missing, or was not refreshed recently). A failed scheduled
+# run emails the repository owner through GitHub's own "failed workflow run" notification; nothing else sends.
+# Set the repository variable DEMO_URL (Settings > Secrets and variables > Actions > Variables), e.g.
+# https://answertab.onrender.com. No secrets are used. Runbook: docs/runbook.md section 10.
+# GitHub disables scheduled workflows after 60 days without repository activity: re-enable it (or push a
+# commit) before Dec 1 if the last commit is older than early October + 60 days.
+name: live-smoke
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_failure:
+        description: Fail on purpose, to test that the failure email arrives
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      DEMO_URL: ${{ vars.DEMO_URL }}
+      FORCE_FAILURE: ${{ inputs.force_failure && 'true' || 'false' }}
+      # The judge-affecting set (the landing banner's set): webhooks and the synthetic run only reconcile or
+      # report, so they are left to /status.
+      JUDGE_CHECKS: '["paypal_oauth","paypal_balance","anthropic","llm_budget_judge","llm_budget_public"]'
+      # The server refreshes checks every 5 minutes; older than this means the status checker stopped.
+      MAX_CHECK_AGE_MIN: '20'
+    steps:
+      - name: Check the hosted demo
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail() {
+            echo "::error title=AnswerTab live smoke failed::$1"
+            { echo "### AnswerTab live smoke failed"; echo; echo "$1"; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
+          if [ "$FORCE_FAILURE" = "true" ]; then
+            fail "Forced failure (workflow_dispatch input force_failure). If this run emailed you, alerts work."
+          fi
+          if [ -z "${DEMO_URL:-}" ]; then
+            echo "::warning title=DEMO_URL not set::Set the repository variable DEMO_URL to the hosted https origin; nothing was checked."
+            exit 0
+          fi
+          url="${DEMO_URL%/}"
+          get() { curl -fsS --max-time 20 --retry 3 --retry-delay 15 --retry-all-errors "$1"; }
+
+          get "$url/healthz" > /dev/null || fail "$url/healthz did not answer 2xx after 4 tries: the service is down or cold-starting."
+          body="$(get "$url/api/status")" || fail "$url/api/status did not answer 2xx after 4 tries."
+
+          bad="$(jq -r --argjson want "$JUDGE_CHECKS" --argjson maxAge "$MAX_CHECK_AGE_MIN" '
+            (if type == "array" then . else (.checks // []) end) as $c
+            | $want[] as $n
+            | ([$c[] | select(.name == $n)] | first) as $x
+            | if $x == null then "\($n): missing from /api/status"
+              elif ($x.ok != true) then "\($n): \($x.detail // "not ok")"
+              elif ((now - ($x.checkedAt | sub("\\.[0-9]+Z$"; "Z") | fromdateiso8601)) > ($maxAge * 60)) then "\($n): last checked \($x.checkedAt), over \($maxAge) min ago"
+              else empty end
+          ' <<< "$body")" || fail "/api/status did not return the expected JSON."
+
+          {
+            echo "### AnswerTab live smoke: $url"
+            echo
+            echo "| Check | OK | Detail |"
+            echo "|---|---|---|"
+            jq -r '(if type == "array" then . else (.checks // []) end)[] | "| \(.name) | \(.ok) | \(.detail | gsub("\\|"; "/")) |"' <<< "$body"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -n "$bad" ]; then
+            fail "Judge-affecting checks failing on $url/status: $(echo "$bad" | paste -sd ';' - | sed 's/;/; /g'). See docs/runbook.md sections 6 and 8."
+          fi
+          echo "All judge-affecting checks ok on $url"

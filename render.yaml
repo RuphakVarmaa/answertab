@@ -1,0 +1,98 @@
+# Render Blueprint for the hosted AnswerTab demo (sandbox only). Field names follow
+# https://render.com/docs/blueprint-spec (checked 2026-10-16). Operating notes: docs/runbook.md.
+#
+# PLAN A (this file as written): paid web service + paid Render Postgres on the hackathon credits.
+#   - Web: plan 0.5c-512mb (Render's "Starter" size: 0.5 CPU, 512 MB). Always on, no cold starts, so the
+#     judge autoplay (start within 10 s) and SSE streams behave.
+#   - DB: plan 0.1c-256mb, same region, reached over the private network only (ipAllowList: []).
+#
+# PLAN B (if the card or its mandate fails): free web service + outside keep-warm ping + Neon free Postgres.
+#   1. web service: plan: free. Free services sleep after ~15 idle minutes; add an outside monitor that GETs
+#      https://<host>/healthz every 5-10 minutes (750 free hours a month cover December's 744).
+#   2. delete the `databases:` block below (Render's free Postgres expires; Neon's free tier does not).
+#   3. replace the DATABASE_URL entry with `- key: DATABASE_URL` + `sync: false` and paste Neon's pooled
+#      connection string (it contains neon.tech, so the app turns TLS on). The first query after Neon idles
+#      takes about 1 s.
+#   Second fallback: Azure for Students credit (same env vars, any Node 22 host with a Postgres URL).
+#
+# Secrets are `sync: false`: Render asks for them once, when the Blueprint is first applied, and ignores them
+# on later syncs (set or rotate them in the dashboard afterwards). Nothing secret lives in this file.
+
+services:
+  - type: web
+    name: answertab
+    runtime: node
+    plan: 0.5c-512mb
+    region: oregon
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    # Deploy a tagged commit by hand (runbook: "Deploy a tag"). autoDeploy is the field the brief names;
+    # autoDeployTrigger is its current replacement and wins when both are present.
+    autoDeploy: false
+    autoDeployTrigger: off
+    envVars:
+      # --- fixed values -------------------------------------------------------------------------------
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      # NODE_ENV=production makes `npm ci` skip devDependencies, but the build needs tsc and vite.
+      - key: NPM_CONFIG_INCLUDE
+        value: dev
+      - key: PAYPAL_ENVIRONMENT
+        value: sandbox
+      # Render's proxy is one hop: trust it for the client IP (rate limits, per-IP room limits).
+      - key: TRUST_PROXY
+        value: "1"
+      - key: LOG_LEVEL
+        value: info
+      - key: DETECT_TAU
+        value: "0.80"
+      - key: JUDGE_DAILY_MICROS
+        value: "5000000"
+      - key: PUBLIC_DAILY_MICROS
+        value: "2000000"
+      - key: ROOM_CAP_MICROS
+        value: "750000"
+      # Public-pool rooms one IP may open per day (judge-code rooms are not limited). Judging window Dec 1-15:
+      # 60, with PUBLIC_DAILY_MICROS 5000000 and SYNTHETIC_EVERY_MIN 1440 (runbook section 9).
+      - key: ROOMS_PER_IP_PER_DAY
+        value: "20"
+      # In-server synthetic runs (minutes between runs; 0 = off), started at boot by src/server/index.ts.
+      # Hourly from the first deploy through judging (burn-in Nov 5-11 included), so /api/status always has a
+      # recent passed run; a pass older than two intervals shows as stale. After judging: 1440 (daily).
+      - key: SYNTHETIC_EVERY_MIN
+        value: "60"
+      # --- database -------------------------------------------------------------------------------------
+      - key: DATABASE_URL
+        fromDatabase:
+          name: answertab-db
+          property: connectionString
+      # --- secrets and per-deploy values (entered in the dashboard; never committed) --------------------
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      # Printed by `npm run webhook:register` once PUBLIC_BASE_URL is the public https URL.
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: PAYPAL_CREATOR_PAYEE_EMAIL
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # e.g. https://answertab.onrender.com (no trailing slash)
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: JUDGE_CODE
+        sync: false
+
+databases:
+  - name: answertab-db
+    plan: 0.1c-256mb
+    region: oregon
+    databaseName: answertab
+    user: answertab
+    postgresMajorVersion: "17"
+    # Private network only: the web service uses the internal connection string.
+    ipAllowList: []

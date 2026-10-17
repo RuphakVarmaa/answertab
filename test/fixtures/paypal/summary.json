@@ -1,0 +1,201 @@
+{
+ "run": "d4f240a1",
+ "results": [
+  {
+   "step": "A1 order AUTHORIZE $20 (test card)",
+   "http": 201,
+   "ms": 2950,
+   "debug_id": "f573968201fbf",
+   "note": "order=COMPLETED auth=CREATED exp=2026-11-14T06:42:34Z"
+  },
+  {
+   "step": "A2.1 capture $5.00 final_capture=false",
+   "http": 201,
+   "ms": 2551,
+   "debug_id": "f8031853d76bf",
+   "note": "cap=5V685566E5143111P COMPLETED fee=0.62 "
+  },
+  {
+   "step": "A2.2 capture $4.00 final_capture=false",
+   "http": 201,
+   "ms": 2565,
+   "debug_id": "f5628539a5f49",
+   "note": "cap=1DJ86231TA814061N COMPLETED fee=0.59 "
+  },
+  {
+   "step": "A2.3 capture $2.00 final_capture=false",
+   "http": 201,
+   "ms": 1947,
+   "debug_id": "f1494844c185e",
+   "note": "cap=98S54918JH246923M COMPLETED fee=0.54 "
+  },
+  {
+   "step": "A2.4 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2337,
+   "debug_id": "f6530017b6085",
+   "note": "cap=23S90727JL119824F COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.5 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2524,
+   "debug_id": "f682775e24e21",
+   "note": "cap=926443994G9926529 COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.6 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2772,
+   "debug_id": "f4547011b9673",
+   "note": "cap=4MS16303FF8289807 COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.7 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2563,
+   "debug_id": "f546603b5e7fe",
+   "note": "cap=2P527909730488511 COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.8 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2337,
+   "debug_id": "f1306053ea8e8",
+   "note": "cap=65X11609EJ778874C COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.9 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2550,
+   "debug_id": "f646231f2fd4b",
+   "note": "cap=189006595Y756342W COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A2.10 capture $1.00 final_capture=false",
+   "http": 201,
+   "ms": 2114,
+   "debug_id": "f66879418ba0e",
+   "note": "cap=8BN89540TM6362924 COMPLETED fee=0.52 "
+  },
+  {
+   "step": "A3 replay capture 1 with SAME PayPal-Request-Id",
+   "http": 200,
+   "ms": 1510,
+   "debug_id": "f977253febaa7",
+   "note": "cap=5V685566E5143111P same_as_first=True"
+  },
+  {
+   "step": "A4 GET authorization after captures",
+   "http": 200,
+   "ms": 1028,
+   "debug_id": "f866567e27cc5",
+   "note": "auth=PARTIALLY_CAPTURED"
+  },
+  {
+   "step": "A5 refund $2 capture (contest upheld)",
+   "http": 201,
+   "ms": 2538,
+   "debug_id": "f6094970b4dde",
+   "note": "refund=8Y107089L7946373A COMPLETED"
+  },
+  {
+   "step": "A6 void remainder of the tab",
+   "http": 200,
+   "ms": 1920,
+   "debug_id": "f292910ff1c88",
+   "note": "auth=VOIDED"
+  },
+  {
+   "step": "A7 GET authorization final",
+   "http": 200,
+   "ms": 1013,
+   "debug_id": "f614217f9bdf1",
+   "note": "auth=VOIDED"
+  },
+  {
+   "step": "B1 order AUTHORIZE $10",
+   "http": 201,
+   "ms": 3118,
+   "debug_id": "f157024c25986",
+   "note": "auth=CREATED"
+  },
+  {
+   "step": "B2 capture $3 final_capture=false",
+   "http": 201,
+   "ms": 2557,
+   "debug_id": "f9934115afa76",
+   "note": "COMPLETED"
+  },
+  {
+   "step": "B3 capture $2 final_capture=true",
+   "http": 201,
+   "ms": 1943,
+   "debug_id": "f6976414bb619",
+   "note": "COMPLETED"
+  },
+  {
+   "step": "B4 GET authorization",
+   "http": 200,
+   "ms": 584,
+   "debug_id": "f1709322c3718",
+   "note": "auth=CAPTURED"
+  },
+  {
+   "step": "B5 capture after final (expect refusal)",
+   "http": 422,
+   "ms": 1527,
+   "debug_id": "f7443682e25c9",
+   "note": "AUTHORIZATION_ALREADY_CAPTURED"
+  },
+  {
+   "step": "C1 order AUTHORIZE $15",
+   "http": 201,
+   "ms": 3344,
+   "debug_id": "f846016bc1041",
+   "note": "auth=CREATED"
+  },
+  {
+   "step": "C2 settle: one capture $7 final_capture=true",
+   "http": 201,
+   "ms": 2546,
+   "debug_id": "f7883084eb7bd",
+   "note": "COMPLETED fee=0.67"
+  },
+  {
+   "step": "D1 order AUTHORIZE $10 (fan with no answers)",
+   "http": 201,
+   "ms": 3120,
+   "debug_id": "f82300102eb59",
+   "note": "auth=CREATED"
+  },
+  {
+   "step": "D2 void whole tab",
+   "http": 200,
+   "ms": 1310,
+   "debug_id": "f472158f8d931",
+   "note": "VOIDED"
+  },
+  {
+   "step": "E1 AUTHORIZE with cardholder CCREJECT-REFUSED",
+   "http": 201,
+   "ms": 3335,
+   "debug_id": "f7194076d1f0e",
+   "note": "order=COMPLETED auth=DENIED  proc={'avs_code': 'G', 'cvv_code': 'P', 'response_code': '0500'}"
+  },
+  {
+   "step": "F1 capture with PayPal-Mock-Response AUTHORIZATION_EXPIRED",
+   "http": 422,
+   "ms": 804,
+   "debug_id": "f134684379619",
+   "note": "AUTHORIZATION_EXPIRED"
+  },
+  {
+   "step": "F2 cleanup void",
+   "http": 200,
+   "ms": 1707,
+   "debug_id": "f583492f4b5b0",
+   "note": "VOIDED"
+  }
+ ]
+}

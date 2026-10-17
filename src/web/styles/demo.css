@@ -1,0 +1,280 @@
+/* Presentation layout: console (two panes) on the left, three phones on the right. Fills one screen. */
+.demo {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.demo .appbar {
+  position: static;
+}
+.demo .console__title h1 {
+  max-width: 20ch;
+}
+@media (max-width: 1439px) {
+  .demo__wide {
+    display: none;
+  }
+}
+/* Detector notes stay one line each so the compact transcript keeps room for the words. */
+.demo .tnote > span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.demo__grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: var(--s-4);
+  padding: var(--s-4) var(--gutter);
+}
+.demo__console {
+  display: grid;
+  grid-template-rows: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--s-4);
+  min-height: 0;
+}
+/* After End the transcript folds to one bar so the review list and its Settle button fit on screen. */
+.demo__console.is-folded {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.demo__folded {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: 48px;
+  padding: var(--s-2) var(--s-4);
+  border: 0;
+  background: none;
+  color: var(--c-ink);
+  text-align: left;
+  border-radius: var(--r-xl);
+}
+.demo__folded > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--c-muted);
+  flex: none;
+}
+.demo__folded:hover {
+  background: var(--c-surface-2);
+}
+.demo__fold {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--s-1) var(--s-2) 0;
+}
+.demo__alert {
+  padding: var(--s-3) var(--gutter) 0;
+}
+.demo__recorded {
+  margin-top: var(--s-2);
+}
+.demo__recorded > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.demo__recorded[open] > summary {
+  margin-bottom: var(--s-3);
+}
+.demo__pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.demo__pane--transcript .transcript__scroll {
+  min-height: 0;
+}
+.demo__stagebody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+/* The approve/settle bar stays in view while the review list scrolls under it. */
+.demo__stagebody .review__foot {
+  position: sticky;
+  bottom: calc(-1 * var(--s-4));
+  z-index: 1;
+  margin: 0 calc(-1 * var(--s-4)) calc(-1 * var(--s-4));
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  background: var(--c-surface);
+  box-shadow: 0 -10px 18px -14px rgba(0, 0, 0, 0.35);
+}
+.demo .review__released {
+  font-size: var(--fs-sm);
+}
+.demo .inputbar--compact .mic > .xsmall,
+.demo .inputbar--compact .mictest {
+  display: none;
+}
+
+.demo__side {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  min-width: 0;
+}
+.strip {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.strip--empty {
+  align-items: center;
+  border: 1px dashed var(--c-line-strong);
+  border-radius: var(--r-xl);
+}
+.phone {
+  margin: 0;
+  display: grid;
+  gap: var(--s-2);
+  justify-items: center;
+  flex: none;
+}
+.phone__screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  background: var(--c-bg);
+  box-shadow:
+    0 0 0 7px var(--c-ink),
+    0 0 0 8px var(--c-line-strong),
+    var(--sh-3);
+}
+.phone__screen::before {
+  /* speaker notch */
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  left: 50%;
+  width: 28%;
+  height: 16px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--c-ink);
+  pointer-events: none;
+}
+.phone__screen iframe {
+  display: block;
+  border: 0;
+  transform-origin: 0 0;
+  background: var(--c-bg);
+}
+.phone__name {
+  font-weight: 650;
+  font-size: var(--fs-lg);
+  margin-top: var(--s-2);
+}
+
+.btn .count {
+  font-size: var(--fs-2xs);
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  background: var(--c-neutral-bg);
+  color: var(--c-ink-2);
+}
+
+/* "Try it yourself" drawer: over the phones, never over the console. */
+.trypanel {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--c-line-strong);
+  border-radius: var(--r-xl);
+  background: var(--c-surface);
+  box-shadow: var(--sh-3);
+  animation: toastIn var(--dur-3) var(--ease-out);
+}
+.trypanel[hidden] {
+  display: none;
+}
+.trypanel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--c-line);
+}
+.trypanel__head > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--c-ok);
+  flex: none;
+}
+.trypanel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4) var(--s-4);
+}
+.trypanel__body > * {
+  min-width: 0;
+}
+.trypanel__body .checklist__list {
+  padding: 0;
+  margin: 0 calc(-1 * var(--s-2));
+}
+.trypanel__fan {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-line);
+}
+.trypanel__fan img {
+  flex: none;
+  border-radius: var(--r-md);
+  background: #fff;
+  padding: 6px;
+  border: 1px solid var(--c-line);
+}
+.trypanel__fan .btn {
+  justify-self: start;
+}
+
+@media (max-width: 1100px) {
+  .demo {
+    height: auto;
+    overflow: visible;
+  }
+  .demo__grid {
+    grid-template-columns: 1fr;
+  }
+  .demo__console {
+    grid-template-rows: 60dvh auto;
+  }
+  .strip {
+    min-height: 520px;
+  }
+  /* One column: the drawer opens right under the header, above the console. */
+  .demo__side {
+    display: contents;
+  }
+  .trypanel {
+    position: static;
+    width: auto;
+    order: -1;
+    max-height: none;
+    box-shadow: var(--sh-2);
+  }
+}

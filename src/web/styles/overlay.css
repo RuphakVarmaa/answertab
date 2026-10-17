@@ -1,0 +1,74 @@
+.overlay {
+  min-height: 100dvh;
+  padding: var(--s-6) var(--s-7);
+  display: grid;
+  gap: var(--s-5);
+  align-content: start;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.overlay__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+.overlay__mark {
+  width: 48px;
+  height: 48px;
+  flex: none;
+}
+.overlay__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.1;
+}
+.overlay__sub {
+  font-size: var(--fs-lg);
+  color: var(--c-ink-2);
+}
+.overlay__qr {
+  margin-left: auto;
+  border-radius: var(--r-md);
+  background: #fff;
+  padding: 6px;
+}
+.overlay__list {
+  list-style: none;
+  display: grid;
+  gap: var(--s-3);
+}
+.overlay__list > li {
+  animation: fadeIn var(--dur-3) var(--ease-out) both;
+}
+.overlay__empty {
+  font-size: var(--fs-xl);
+  color: var(--c-muted);
+}
+.overlay .qcard {
+  padding: var(--s-5) var(--s-6);
+  border-radius: var(--r-xl);
+}
+.overlay .qcard__top {
+  font-size: var(--fs-md);
+}
+.overlay .qcard__num,
+.overlay .qcard__amount {
+  font-size: var(--fs-xl);
+}
+.overlay--clear .qcard {
+  box-shadow: var(--sh-3);
+}
+.overlay--clear .overlay__head {
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-xl);
+  background: color-mix(in srgb, var(--c-surface) 92%, transparent);
+}
+@media (max-width: 700px) {
+  .overlay {
+    padding: var(--s-4) var(--gutter);
+  }
+  .overlay__title {
+    font-size: var(--fs-2xl);
+  }
+}

@@ -1,0 +1,52 @@
+.statuspage__bar,
+.statuspage__main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+.statuspage__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  padding-bottom: var(--s-4);
+}
+.statuspage__main {
+  display: grid;
+  gap: var(--s-4);
+  padding-bottom: var(--s-9);
+}
+.statuspage__title {
+  font-size: var(--fs-3xl);
+  margin-top: var(--s-4);
+}
+.checks {
+  list-style: none;
+  display: grid;
+  gap: var(--s-2);
+}
+.check {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-line);
+  background: var(--c-surface);
+}
+.check > svg {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  color: var(--tone);
+}
+.check__body {
+  flex: 1;
+  min-width: 0;
+}
+.check__state {
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--tone);
+}

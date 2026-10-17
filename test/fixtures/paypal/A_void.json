@@ -1,0 +1,26 @@
+{
+ "status": 200,
+ "ms": 1920,
+ "debug_id": "f292910ff1c88",
+ "body": {
+  "id": "844666162S1397447",
+  "status": "VOIDED",
+  "amount": {
+   "currency_code": "USD",
+   "value": "20.00"
+  },
+  "seller_protection": {
+   "status": "NOT_ELIGIBLE"
+  },
+  "expiration_time": "2026-11-13T22:42:34-08:00",
+  "create_time": "2026-10-15T23:42:34-07:00",
+  "update_time": "2026-10-15T23:43:05-07:00",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/844666162S1397447",
+    "rel": "self",
+    "method": "GET"
+   }
+  ]
+ }
+}

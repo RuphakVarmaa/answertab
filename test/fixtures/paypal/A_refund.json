@@ -1,0 +1,48 @@
+{
+ "status": 201,
+ "ms": 2538,
+ "debug_id": "f6094970b4dde",
+ "body": {
+  "id": "8Y107089L7946373A",
+  "amount": {
+   "currency_code": "USD",
+   "value": "2.00"
+  },
+  "note_to_payer": "Heard: contest upheld",
+  "seller_payable_breakdown": {
+   "gross_amount": {
+    "currency_code": "USD",
+    "value": "2.00"
+   },
+   "paypal_fee": {
+    "currency_code": "USD",
+    "value": "0.00"
+   },
+   "net_amount": {
+    "currency_code": "USD",
+    "value": "2.00"
+   },
+   "total_refunded_amount": {
+    "currency_code": "USD",
+    "value": "2.00"
+   }
+  },
+  "invoice_id": "heard-d4f240a1-A-cap3",
+  "custom_id": "heard-spike-d4f240a1",
+  "status": "COMPLETED",
+  "create_time": "2026-10-15T23:43:03-07:00",
+  "update_time": "2026-10-15T23:43:03-07:00",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/refunds/8Y107089L7946373A",
+    "rel": "self",
+    "method": "GET"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/captures/98S54918JH246923M",
+    "rel": "up",
+    "method": "GET"
+   }
+  ]
+ }
+}

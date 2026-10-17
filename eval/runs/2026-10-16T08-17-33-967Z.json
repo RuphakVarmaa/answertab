@@ -1,0 +1,182 @@
+{
+  "createdAt": "2026-10-16T08:17:33.970Z",
+  "label": "dev baseline disabled/low",
+  "split": "dev",
+  "category": null,
+  "cases": 43,
+  "syntheticCases": 43,
+  "model": "claude-haiku-5-5",
+  "settings": {
+    "thinking": "disabled",
+    "effort": "low",
+    "maxTokens": 1500
+  },
+  "fromRaw": null,
+  "calls": 43,
+  "failedCalls": 0,
+  "latencyMs": {
+    "p50": 1370,
+    "p95": 2543,
+    "max": 2915
+  },
+  "costPerCaseMicros": 123,
+  "totalCostMicros": 5297,
+  "cacheReadShare": 0.912,
+  "metrics": {
+    "tau": 0.85,
+    "runs": 1,
+    "worstRunFalseChargeRate": 0,
+    "worstRunFalseCharges": "0/30",
+    "worstRunFalseChargeWilson95": [
+      0,
+      0.114
+    ],
+    "meanFalseChargeRate": 0,
+    "pooledFalseChargeWilson95": [
+      0,
+      0.114
+    ],
+    "meanRecall": 0.966,
+    "minRecall": 0.966,
+    "recallWilson95FirstRun": [
+      0.828,
+      0.994
+    ],
+    "meanRecallLockOrReview": 1,
+    "meanReviewRateOnAnswered": 0.034,
+    "meanReviewShareAllPairs": 0.102,
+    "meanRawVerdictAccuracy": 1,
+    "perRun": [
+      {
+        "run": 1,
+        "pairs": 59,
+        "negatives": 30,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.114
+        ],
+        "answered": 29,
+        "locksCorrect": 28,
+        "recall": 0.966,
+        "recallLockOrReview": 1,
+        "reviewOnAnswered": 1,
+        "reviewRateAnswered": 0.034,
+        "reviewShareAll": 0.102,
+        "evidenceMissOnLock": 0,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 8,
+        "deflectionsDetected": 8,
+        "lateBackerChecks": 2,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 1,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "dev-ooo-1#Q2:review"
+        ]
+      }
+    ]
+  },
+  "tauSweep": [
+    {
+      "tau": 0.6,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.65,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.7,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.75,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.8,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 1,
+      "minRecall": 1,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.85,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.966,
+      "minRecall": 0.966,
+      "meanReviewRateOnAnswered": 0.034
+    },
+    {
+      "tau": 0.9,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.931,
+      "minRecall": 0.931,
+      "meanReviewRateOnAnswered": 0.069
+    },
+    {
+      "tau": 0.95,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/30",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.114
+      ],
+      "meanRecall": 0.276,
+      "minRecall": 0.276,
+      "meanReviewRateOnAnswered": 0.724
+    }
+  ]
+}

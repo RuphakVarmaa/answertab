@@ -1,0 +1,46 @@
+{
+ "status": 200,
+ "ms": 817,
+ "debug_id": "ca4b5a0534de0",
+ "source": "sandbox-proof run L8y5vV, op orders.create (redacted ledger copy)",
+ "body": {
+  "id": "45E67558591071613",
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/45E67558591071613",
+    "method": "GET"
+   },
+   {
+    "rel": "payer-action",
+    "href": "https://www.sandbox.paypal.com/checkoutnow?token=45E67558591071613",
+    "method": "GET"
+   }
+  ],
+  "intent": "AUTHORIZE",
+  "status": "PAYER_ACTION_REQUIRED",
+  "payment_source": {
+   "paypal": {}
+  },
+  "purchase_units": [
+   {
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "display_data": {
+      "brand_name": "AnswerTab"
+     },
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "20.00",
+     "currency_code": "USD"
+    },
+    "custom_id": "proofL8y5vV-fan_EPekR",
+    "invoice_id": "tab-proofL8y5vV-fan_EPekR",
+    "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+    "reference_id": "default",
+    "soft_descriptor": "AnswerTab"
+   }
+  ]
+ }
+}

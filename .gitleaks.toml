@@ -1,0 +1,39 @@
+# gitleaks config (CI pins gitleaks 8.30.1). Default rules, plus allowlists for public test data only:
+# PayPal's published sandbox test card numbers, sandbox/example.com emails in fixtures, and the obviously fake
+# tokens the redaction tests feed in. Never allowlist a real credential here; rotate it instead (runbook).
+title = "AnswerTab"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "PayPal's published sandbox test card numbers (developer.paypal.com testing docs)"
+regexTarget = "match"
+# Exactly the numbers in src/server/paypal/testCards.ts (bot cards and the judge card); add others one by one.
+regexes = [
+  '''\b4111111111111111\b''',  # Visa (also the judge card shown on the page)
+  '''\b5555555555554444\b''',  # Mastercard
+  '''\b371449635398431\b''',   # Amex
+  '''\b6011111111111117\b''',  # Discover
+]
+
+[[allowlists]]
+description = "Sandbox buyer/seller accounts and example.com addresses used in fixtures and tests"
+regexTarget = "match"
+regexes = [
+  '''sb-[a-z0-9]+@(business|personal)\.example\.com''',
+  '''[a-z0-9._%+-]+@example\.com''',
+]
+
+[[allowlists]]
+description = "Fake tokens and codes in tests (redaction and transport tests, test config)"
+regexTarget = "line"
+regexes = [
+  '''A21AAtest-token''',
+  '''A21AAabcdefghijklmnopqrstuvwxyz0123456789''',
+  '''A21AA(xyz)+''',
+  '''Bearer abc\.def\.ghi''',
+  '''judge-code-for-tests''',
+  '''test-client-(id|secret)''',
+  '''fake-token''',
+]

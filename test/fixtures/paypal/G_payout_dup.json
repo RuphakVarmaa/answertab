@@ -1,0 +1,28 @@
+{
+ "status": 400,
+ "ms": 491,
+ "debug_id": "ca4b5a09e2e8c",
+ "source": "sandbox-proof run L8y5vV, op payouts.create (redacted ledger copy)",
+ "body": {
+  "name": "USER_BUSINESS_ERROR",
+  "links": [],
+  "details": [
+   {
+    "link": [
+     {
+      "rel": "self",
+      "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU",
+      "method": "GET",
+      "encType": "application/json"
+     }
+    ],
+    "field": "SENDER_BATCH_ID",
+    "issue": "Batch with given sender_batch_id already exists",
+    "location": "body"
+   }
+  ],
+  "message": "User business error.",
+  "debug_id": "ca4b5a09e2e8c",
+  "information_link": "https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"
+ }
+}

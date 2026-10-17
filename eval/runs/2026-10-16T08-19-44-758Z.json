@@ -1,0 +1,251 @@
+{
+  "createdAt": "2026-10-16T08:19:44.760Z",
+  "label": "val tau tuning (frozen prompt)",
+  "split": "val",
+  "category": null,
+  "cases": 40,
+  "syntheticCases": 40,
+  "model": "claude-haiku-5-5",
+  "settings": {
+    "thinking": "disabled",
+    "effort": "low",
+    "maxTokens": 1500
+  },
+  "fromRaw": null,
+  "calls": 120,
+  "failedCalls": 0,
+  "latencyMs": {
+    "p50": 1269,
+    "p95": 1836,
+    "max": 3159
+  },
+  "costPerCaseMicros": 104,
+  "totalCostMicros": 12478,
+  "cacheReadShare": 0.947,
+  "metrics": {
+    "tau": 0.85,
+    "runs": 3,
+    "worstRunFalseChargeRate": 0,
+    "worstRunFalseCharges": "0/24",
+    "worstRunFalseChargeWilson95": [
+      0,
+      0.138
+    ],
+    "meanFalseChargeRate": 0,
+    "pooledFalseChargeWilson95": [
+      0,
+      0.051
+    ],
+    "meanRecall": 0.901,
+    "minRecall": 0.889,
+    "recallWilson95FirstRun": [
+      0.766,
+      0.979
+    ],
+    "meanRecallLockOrReview": 0.926,
+    "meanReviewRateOnAnswered": 0.025,
+    "meanReviewShareAllPairs": 0.111,
+    "meanRawVerdictAccuracy": 0.98,
+    "perRun": [
+      {
+        "run": 1,
+        "pairs": 51,
+        "negatives": 24,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.138
+        ],
+        "answered": 27,
+        "locksCorrect": 25,
+        "recall": 0.926,
+        "recallLockOrReview": 0.926,
+        "reviewOnAnswered": 0,
+        "reviewRateAnswered": 0,
+        "reviewShareAll": 0.098,
+        "evidenceMissOnLock": 1,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 5,
+        "deflectionsDetected": 5,
+        "lateBackerChecks": 6,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 0.98,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "val-late-1#Q2:ignore",
+          "val-demo-3#Q3:ignore"
+        ]
+      },
+      {
+        "run": 2,
+        "pairs": 51,
+        "negatives": 24,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.138
+        ],
+        "answered": 27,
+        "locksCorrect": 24,
+        "recall": 0.889,
+        "recallLockOrReview": 0.926,
+        "reviewOnAnswered": 1,
+        "reviewRateAnswered": 0.037,
+        "reviewShareAll": 0.118,
+        "evidenceMissOnLock": 1,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 5,
+        "deflectionsDetected": 5,
+        "lateBackerChecks": 6,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 0.98,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "val-tangent-1#Q2:review",
+          "val-late-1#Q2:ignore",
+          "val-demo-3#Q3:ignore"
+        ]
+      },
+      {
+        "run": 3,
+        "pairs": 51,
+        "negatives": 24,
+        "falseCharges": 0,
+        "falseChargeRate": 0,
+        "falseChargeCI": [
+          0,
+          0.138
+        ],
+        "answered": 27,
+        "locksCorrect": 24,
+        "recall": 0.889,
+        "recallLockOrReview": 0.926,
+        "reviewOnAnswered": 1,
+        "reviewRateAnswered": 0.037,
+        "reviewShareAll": 0.118,
+        "evidenceMissOnLock": 1,
+        "partials": 5,
+        "partialToReview": 5,
+        "deflections": 5,
+        "deflectionsDetected": 5,
+        "lateBackerChecks": 6,
+        "lateBackerWrongCharges": 0,
+        "rawVerdictAccuracy": 0.98,
+        "callsFailed": 0,
+        "failReasons": {},
+        "falseChargeCases": [],
+        "missedAnswerCases": [
+          "val-tangent-1#Q2:review",
+          "val-late-1#Q2:ignore",
+          "val-demo-3#Q3:ignore"
+        ]
+      }
+    ]
+  },
+  "tauSweep": [
+    {
+      "tau": 0.6,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.926,
+      "minRecall": 0.926,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.65,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.926,
+      "minRecall": 0.926,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.7,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.926,
+      "minRecall": 0.926,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.75,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.926,
+      "minRecall": 0.926,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.8,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.926,
+      "minRecall": 0.926,
+      "meanReviewRateOnAnswered": 0
+    },
+    {
+      "tau": 0.85,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.901,
+      "minRecall": 0.889,
+      "meanReviewRateOnAnswered": 0.025
+    },
+    {
+      "tau": 0.9,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.877,
+      "minRecall": 0.852,
+      "meanReviewRateOnAnswered": 0.049
+    },
+    {
+      "tau": 0.95,
+      "worstRunFalseChargeRate": 0,
+      "worstRunFalseCharges": "0/24",
+      "worstRunFalseChargeWilson95": [
+        0,
+        0.138
+      ],
+      "meanRecall": 0.123,
+      "minRecall": 0.074,
+      "meanReviewRateOnAnswered": 0.802
+    }
+  ]
+}

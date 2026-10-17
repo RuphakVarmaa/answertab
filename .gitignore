@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.data/
+coverage/
+*.log
+.DS_Store
+eval/runs/*.raw.jsonl
+
+# Builder-only planning notes (strategy brief, checklist, Devpost draft, video script)
+local-notes/

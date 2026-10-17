@@ -1,0 +1,26 @@
+{
+ "status": 200,
+ "ms": 1707,
+ "debug_id": "f583492f4b5b0",
+ "body": {
+  "id": "9K7832920L044390M",
+  "status": "VOIDED",
+  "amount": {
+   "currency_code": "USD",
+   "value": "10.00"
+  },
+  "seller_protection": {
+   "status": "NOT_ELIGIBLE"
+  },
+  "expiration_time": "2026-11-13T22:43:33-08:00",
+  "create_time": "2026-10-15T23:43:33-07:00",
+  "update_time": "2026-10-15T23:43:36-07:00",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/9K7832920L044390M",
+    "rel": "self",
+    "method": "GET"
+   }
+  ]
+ }
+}

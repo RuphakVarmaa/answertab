@@ -1,0 +1,13 @@
+// AI module API (ARCHITECTURE.md "AI module API"). The domain layer imports only from here.
+export { intakeQuestion } from './intake.js'
+export { detectAnswers, detectAnswersDetailed, parseDetectorOutput, selectWindow } from './detector.js'
+export { guardVerdict, guardCreatorSpan, checkSpan, cutSpan, GUARD_DEFAULTS, type GuardOptions } from './guard.js'
+export { verifyLock } from './verifier.js'
+export { runContestDesk, type ContestDeskDeps, type ContestDeskOptions } from './contestDesk.js'
+export { refundPolicy, AUTO_REFUND_MAX_CENTS, type RefundPolicyDecision } from './contestPolicy.js'
+export { budget } from './budget.js'
+export { prefilterHit } from './prefilter.js'
+export { DetectorScheduler, realClock, type DetectorRun, type DetectorSchedulerOptions, type SchedulerClock, type Trigger } from './scheduler.js'
+export { aiEnabled, setAiTroubleListener, setAnthropicClientForTests, type TroubleListener } from './anthropic.js'
+export { setAiLogger, type AiLogger } from './log.js'
+export type { OpenQ, GuardResult, GuardAction, IntakeResult, ContestOutcome, AiTroubleReason } from './types.js'

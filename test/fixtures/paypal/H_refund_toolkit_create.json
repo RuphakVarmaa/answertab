@@ -1,0 +1,22 @@
+{
+ "status": 201,
+ "ms": 1475,
+ "debug_id": "ea28541168788",
+ "source": "sandbox-proof run L8y5vV, op refunds.create:toolkit (redacted ledger copy)",
+ "body": {
+  "id": "01X78775LG7323300",
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v2/payments/refunds/01X78775LG7323300",
+    "method": "GET"
+   },
+   {
+    "rel": "up",
+    "href": "https://api.sandbox.paypal.com/v2/payments/captures/9DP2030183371883J",
+    "method": "GET"
+   }
+  ],
+  "status": "COMPLETED"
+ }
+}

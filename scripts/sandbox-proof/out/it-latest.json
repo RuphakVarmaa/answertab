@@ -1,0 +1,176 @@
+{
+ "roomId": "itbhjWJvyd",
+ "at": "2026-10-16T16:47:20.502Z",
+ "calls": [
+  {
+   "op": "oauth.token",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "f292924ea91f6",
+   "latency_ms": 1323,
+   "tab_id": null
+  },
+  {
+   "op": "orders.create",
+   "http_status": 201,
+   "request_id": "order-itbhjWJvyd-fan_13FTwkF",
+   "resource_id": "86R51422B8204500C",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "f110543deaab5",
+   "latency_ms": 4564,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "payments.capture",
+   "http_status": 201,
+   "request_id": "settle-itbhjWJvyd-fan_13FTwkF",
+   "resource_id": "45S67696JF542931H",
+   "resource_status": "COMPLETED",
+   "debug_id": "f9451986ca6fd",
+   "latency_ms": 2307,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "payments.capture.get",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": "45S67696JF542931H",
+   "resource_status": "COMPLETED",
+   "debug_id": "f6084461b1ed7",
+   "latency_ms": 589,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "payments.authorization.get",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": "5Y426842K3684482P",
+   "resource_status": "CAPTURED",
+   "debug_id": "f608446a79f5b",
+   "latency_ms": 1294,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "payments.capture.replay",
+   "http_status": 200,
+   "request_id": "settle-itbhjWJvyd-fan_13FTwkF",
+   "resource_id": "45S67696JF542931H",
+   "resource_status": "COMPLETED",
+   "debug_id": "f340019fe69bd",
+   "latency_ms": 1176,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "orders.create",
+   "http_status": 201,
+   "request_id": "order-itbhjWJvyd-fan_26Gz34W",
+   "resource_id": "7A809280E3094074B",
+   "resource_status": "COMPLETED; auth=CREATED",
+   "debug_id": "f19224037954f",
+   "latency_ms": 2907,
+   "tab_id": "tab_fan_26Gz34W"
+  },
+  {
+   "op": "payments.void",
+   "http_status": 200,
+   "request_id": "void-itbhjWJvyd-fan_26Gz34W",
+   "resource_id": "79K17753GY035224A",
+   "resource_status": "VOIDED",
+   "debug_id": "f58788769234f",
+   "latency_ms": 1509,
+   "tab_id": "tab_fan_26Gz34W"
+  },
+  {
+   "op": "orders.create",
+   "http_status": 201,
+   "request_id": "order-itbhjWJvyd-fan_3TwhCNf",
+   "resource_id": "73K14914M2869982D",
+   "resource_status": "COMPLETED; auth=DENIED",
+   "debug_id": "f8870020ab736",
+   "latency_ms": 2914,
+   "tab_id": "tab_fan_3TwhCNf"
+  },
+  {
+   "op": "toolkit.oauth.token",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "36c13364cac69",
+   "latency_ms": 870,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "refunds.create:toolkit",
+   "http_status": 201,
+   "request_id": "refund-ct_hwxC6hSPk7",
+   "resource_id": "1LU5171640908844C",
+   "resource_status": "COMPLETED",
+   "debug_id": "36c1339e1940d",
+   "latency_ms": 1637,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "toolkit.oauth.token",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "d4a027350e077",
+   "latency_ms": 381,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "refunds.get:toolkit",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": "1LU5171640908844C",
+   "resource_status": "COMPLETED",
+   "debug_id": "d9145e9933b7d",
+   "latency_ms": 396,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "toolkit.oauth.token",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": null,
+   "resource_status": "issued",
+   "debug_id": "49fce0e19c596",
+   "latency_ms": 383,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "orders.get:toolkit",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": "86R51422B8204500C",
+   "resource_status": "COMPLETED; auth=CAPTURED",
+   "debug_id": "d9169d104875f",
+   "latency_ms": 1427,
+   "tab_id": "tab_fan_13FTwkF"
+  },
+  {
+   "op": "payouts.create",
+   "http_status": 201,
+   "request_id": "payout-itbhjWJvyd-1",
+   "resource_id": "M5CX9BSGMAPVJ",
+   "resource_status": "PENDING",
+   "debug_id": "f522157bf895d",
+   "latency_ms": 1213,
+   "tab_id": null
+  },
+  {
+   "op": "payouts.get",
+   "http_status": 200,
+   "request_id": null,
+   "resource_id": "M5CX9BSGMAPVJ",
+   "resource_status": "PENDING",
+   "debug_id": "f9595580cbc53",
+   "latency_ms": 879,
+   "tab_id": null
+  }
+ ]
+}

@@ -1,0 +1,58 @@
+{
+ "status": 200,
+ "ms": 848,
+ "debug_id": "ca4b5a098d8d4",
+ "source": "sandbox-proof run L8y5vV, op payouts.get (redacted ledger copy)",
+ "body": {
+  "items": [
+   {
+    "links": [
+     {
+      "rel": "item",
+      "href": "https://api.sandbox.paypal.com/v1/payments/payouts-item/W48R3GQYYKD32",
+      "method": "GET",
+      "encType": "application/json"
+     }
+    ],
+    "payout_item": {
+     "note": "AnswerTab sandbox proof payout",
+     "amount": {
+      "value": "1.00",
+      "currency": "USD"
+     },
+     "purpose": "GOODS",
+     "receiver": "sb-u***@personal.example.com",
+     "recipient_type": "EMAIL",
+     "sender_item_id": "payout-proofL8y5vV-1-1",
+     "recipient_wallet": "PAYPAL"
+    },
+    "payout_item_id": "W48R3GQYYKD32",
+    "payout_batch_id": "RVH4PCJL3VCZU",
+    "transaction_status": "PENDING"
+   }
+  ],
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v1/payments/payouts/RVH4PCJL3VCZU?page_size=1000&page=1",
+    "method": "GET",
+    "encType": "application/json"
+   }
+  ],
+  "batch_header": {
+   "amount": {
+    "value": "1.00",
+    "currency": "USD"
+   },
+   "batch_status": "PENDING",
+   "time_created": "2026-10-16T08:17:28Z",
+   "funding_source": "BALANCE",
+   "payout_batch_id": "RVH4PCJL3VCZU",
+   "sender_batch_header": {
+    "email_message": "AnswerTab sandbox proof payout",
+    "email_subject": "Your AnswerTab payout",
+    "sender_batch_id": "payout-proofL8y5vV-1"
+   }
+  }
+ }
+}

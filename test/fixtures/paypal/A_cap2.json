@@ -1,0 +1,57 @@
+{
+ "status": 201,
+ "ms": 2565,
+ "debug_id": "f5628539a5f49",
+ "body": {
+  "id": "1DJ86231TA814061N",
+  "amount": {
+   "currency_code": "USD",
+   "value": "4.00"
+  },
+  "final_capture": false,
+  "seller_protection": {
+   "status": "NOT_ELIGIBLE"
+  },
+  "seller_receivable_breakdown": {
+   "gross_amount": {
+    "currency_code": "USD",
+    "value": "4.00"
+   },
+   "paypal_fee": {
+    "currency_code": "USD",
+    "value": "0.59"
+   },
+   "net_amount": {
+    "currency_code": "USD",
+    "value": "3.41"
+   },
+   "exchange_rate": {}
+  },
+  "invoice_id": "heard-d4f240a1-A-cap2",
+  "custom_id": "heard-spike-d4f240a1",
+  "status": "COMPLETED",
+  "create_time": "2026-10-16T06:42:39Z",
+  "update_time": "2026-10-16T06:42:39Z",
+  "links": [
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/captures/1DJ86231TA814061N",
+    "rel": "self",
+    "method": "GET"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/captures/1DJ86231TA814061N/refund",
+    "rel": "refund",
+    "method": "POST"
+   },
+   {
+    "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/844666162S1397447",
+    "rel": "up",
+    "method": "GET"
+   }
+  ],
+  "network_transaction_reference": {
+   "id": "623085373455470",
+   "network": "VISA"
+  }
+ }
+}

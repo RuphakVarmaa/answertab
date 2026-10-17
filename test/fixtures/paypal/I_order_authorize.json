@@ -1,0 +1,106 @@
+{
+ "status": 201,
+ "ms": 1780,
+ "debug_id": "ca4b5a03ace3e",
+ "source": "sandbox-proof run L8y5vV, op orders.authorize (redacted ledger copy)",
+ "body": {
+  "id": "4HM0053164626273R",
+  "links": [
+   {
+    "rel": "self",
+    "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+    "method": "GET"
+   }
+  ],
+  "intent": "AUTHORIZE",
+  "status": "COMPLETED",
+  "create_time": "2026-10-16T08:17:14Z",
+  "update_time": "2026-10-16T08:17:14Z",
+  "payment_source": {
+   "card": {
+    "name": "[redacted]",
+    "type": "UNKNOWN",
+    "brand": "VISA",
+    "expiry": "[redacted]",
+    "bin_details": {},
+    "last_digits": "1111"
+   }
+  },
+  "purchase_units": [
+   {
+    "payee": {
+     "merchant_id": "GYWQWW2DYGMFE",
+     "display_data": {
+      "brand_name": "AnswerTab"
+     },
+     "email_address": "sb-u***@business.example.com"
+    },
+    "amount": {
+     "value": "20.00",
+     "currency_code": "USD"
+    },
+    "payments": {
+     "authorizations": [
+      {
+       "id": "50M31695U7484020X",
+       "links": [
+        {
+         "rel": "self",
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X",
+         "method": "GET"
+        },
+        {
+         "rel": "capture",
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/capture",
+         "method": "POST"
+        },
+        {
+         "rel": "void",
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/void",
+         "method": "POST"
+        },
+        {
+         "rel": "reauthorize",
+         "href": "https://api.sandbox.paypal.com/v2/payments/authorizations/50M31695U7484020X/reauthorize",
+         "method": "POST"
+        },
+        {
+         "rel": "up",
+         "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4HM0053164626273R",
+         "method": "GET"
+        }
+       ],
+       "amount": {
+        "value": "20.00",
+        "currency_code": "USD"
+       },
+       "status": "CREATED",
+       "custom_id": "proofL8y5vV-fan_DYZmN",
+       "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+       "create_time": "2026-10-16T08:17:14Z",
+       "update_time": "2026-10-16T08:17:14Z",
+       "expiration_time": "2026-11-14T08:17:14Z",
+       "seller_protection": {
+        "status": "NOT_ELIGIBLE"
+       },
+       "processor_response": {
+        "avs_code": "A",
+        "cvv_code": "M",
+        "response_code": "0000"
+       },
+       "network_transaction_reference": {
+        "id": "305741342679529",
+        "network": "VISA"
+       }
+      }
+     ]
+    },
+    "custom_id": "proofL8y5vV-fan_DYZmN",
+    "invoice_id": "tab-proofL8y5vV-fan_DYZmN",
+    "description": "Hold up to $20.00. Charged only for questions answered on stream.",
+    "reference_id": "default",
+    "soft_descriptor": "ANSWERTAB"
+   }
+  ]
+ }
+}
